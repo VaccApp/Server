@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const userSchema = new Schema(
+const vaccineSchema = new Schema(
   {
     name: {
       type: String,
@@ -27,12 +27,20 @@ const userSchema = new Schema(
       type: String,
       required: [true, "El número de lote es necesario."],
     },
+    status: {
+      type: String,
+      enum: ["PENDIENTE", "PROGRAMADA", "PUESTA"],
+      default: "PENDIENTE",
+    },
+    // vaccinationAge: {
+    //   type: Number,
+    // },
   },
   {
     timestamps: true,
   }
 );
 
-const Vaccine = model("Vacuna", userSchema);
+const Vaccine = model("Vacuna", vaccineSchema);
 
 module.exports = Vaccine;
