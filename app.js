@@ -20,11 +20,17 @@ require("./config")(app);
 const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 
-const authRoutes = require("./routes/auth.routes");
-app.use("/auth", authRoutes);
-
 const familyRoutes = require("./routes/family.routes");
 app.use("/family", familyRoutes);
+
+const childRoutes = require("./routes/child.routes");
+app.use("/child", childRoutes);
+
+const vaccineRoutes = require("./routes/vaccine.routes");
+app.use("/vaccines", vaccineRoutes);
+
+const authRoutes = require("./routes/auth.routes");
+app.use("/auth", authRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);

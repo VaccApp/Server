@@ -1,15 +1,21 @@
 const router = require("express").Router();
 const Vaccine = require("../models/Vaccine.model");
 
-router.post("/vaccine", (req, res, next) => {
-  const { name, dose, disease, creator, expires, batch } = req.body;
+router.get("/", (req, res, next) => {
+  Vaccine.find()
+    .then((vaccines) => res.json(vaccines))
+    .catch((err) => res.json(err));
+});
 
-  Vaccine.create({ name, dose, disease, creator, expires, batch })
+router.post("/", (req, res, next) => {
+  const { name, dose, disease, creator, expires, batch, status } = req.body;
+
+  Vaccine.create({ name, dose, disease, creator, expires, batch, status })
     .then((newVaccine) => res.json(newVaccine))
     .catch((err) => res.json(err));
 });
 
-router.get("/vaccine/:id", (req, res, next) => {
+router.get("/:id", (req, res, next) => {
   const { id } = req.params;
 
   Vaccine.findById(id)
@@ -17,7 +23,7 @@ router.get("/vaccine/:id", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.put("/vaccine/:id", (req, res, next) => {
+router.put("/:id", (req, res, next) => {
   const { id } = req.params;
   const { name, dose, disease, creator, expires, batch } = req.body;
 
@@ -30,7 +36,7 @@ router.put("/vaccine/:id", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.delete("/vaccine/:id", (req, res, next) => {
+router.delete("/:id", (req, res, next) => {
   const { id } = req.params;
 
   Vaccine.findByIdAndDelete(id)

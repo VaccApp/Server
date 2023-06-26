@@ -8,7 +8,7 @@ const vaccineSchema = new Schema(
       unique: true,
     },
     dose: {
-      type: String,
+      type: Number,
       required: [true, "Dosis requeridas."],
     },
     disease: {
@@ -41,6 +41,6 @@ const vaccineSchema = new Schema(
   }
 );
 
-const Vaccine = model("Vacuna", vaccineSchema);
+const Vaccine = model("Vaccine", vaccineSchema);
 
 module.exports = Vaccine;

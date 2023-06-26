@@ -7,8 +7,8 @@ const familySchema = new Schema(
       type: String,
       required: [true, "Apellido de la familia necesario."],
     },
-    // parents: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    // children: [{ type: Schema.Types.ObjectId, ref: "Child" }],
+    parents: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    children: [{ type: Schema.Types.ObjectId, ref: "Child" }],
   },
   {
     timestamps: true,
