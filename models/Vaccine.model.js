@@ -5,7 +5,6 @@ const vaccineSchema = new Schema(
     name: {
       type: String,
       required: [true, "Nombre de la vacuna requerido."],
-      unique: true,
     },
     dose: {
       type: Number,

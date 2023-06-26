@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const Vaccine = require("../models/Vaccine.model");
-const Child = require("..models/Child.model");
+const Child = require("../models/Child.model");
 
 router.get("/", (req, res, next) => {
   Vaccine.find()
@@ -8,9 +8,10 @@ router.get("/", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.post("/", (req, res, next) => {
-  const { name, dose, disease, creator, expires, batch, status, childId } =
-    req.body;
+router.post("/:receiverId", (req, res, next) => {
+  const { name, dose, disease, creator, expires, batch, status } = req.body;
+
+  const { receiverId } = req.params;
 
   Vaccine.create({
     name,
@@ -20,17 +21,20 @@ router.post("/", (req, res, next) => {
     expires,
     batch,
     status,
-    child: childId,
   })
     .then((newVaccine) => {
-      console.log(childId);
+      console.log(newVaccine);
       return Child.findByIdAndUpdate(
-        childId,
-        { $push: { vaccine: newVaccine } },
+        receiverId,
+        { $push: { vaccines: newVaccine } },
         { new: true }
       );
     })
-    .then((response) => res.json(response))
+    .then((response) => {
+      console.log(response);
+
+      res.json(response);
+    })
     .catch((err) => res.json(err));
 });
 
