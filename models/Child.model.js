@@ -11,7 +11,7 @@ const childSchema = new Schema(
       type: Date,
       required: [true, "La fecha de nacimiento es obligatoria."],
     },
-    family: [{ type: Schema.Types.ObjectId, ref: "Family" }],
+    family: { type: Schema.Types.ObjectId, ref: "Family" },
     vaccines: [{ type: Schema.Types.ObjectId, ref: "Vaccine" }],
   },
   {

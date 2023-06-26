@@ -2,14 +2,15 @@ const router = require("express").Router();
 const Child = require("../models/Child.model");
 const Family = require("../models/Family.model");
 
-router.post("/child", (req, res, next) => {
+router.post("/", (req, res, next) => {
   const { name, birthDate, familyId } = req.body;
 
   Child.create({ name, birthDate, family: familyId })
     .then((newChild) => {
+      console.log(familyId);
       return Family.findByIdAndUpdate(
         familyId,
-        { $push: { children: newChild._id } },
+        { $push: { children: newChild } },
         { new: true }
       );
     })
@@ -17,16 +18,19 @@ router.post("/child", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.get("/child/:id", (req, res, next) => {
+router.get("/:id", (req, res, next) => {
   const { id } = req.params;
 
   Child.findById(id)
-    .populate("family")
+    .populate({
+      path: "family",
+      populate: { path: "parents", path: "children" },
+    })
     .then((child) => res.json(child))
     .catch((err) => res.json(err));
 });
 
-router.put("/child/:id", (req, res, next) => {
+router.put("/:id", (req, res, next) => {
   const { id } = req.params;
   const { name, birthDate } = req.body;
 
@@ -35,7 +39,7 @@ router.put("/child/:id", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.delete("/child/:id", (req, res, next) => {
+router.delete("/:id", (req, res, next) => {
   const { id } = req.params;
 
   Child.findByIdAndDelete(id)
