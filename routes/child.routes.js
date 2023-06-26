@@ -24,7 +24,11 @@ router.get("/:id", (req, res, next) => {
   Child.findById(id)
     .populate({
       path: "family",
-      populate: { path: "parents", path: "children" },
+      populate: { path: "parents" },
+    })
+    .populate({
+      path: "family",
+      populate: { path: "children" },
     })
     .then((child) => res.json(child))
     .catch((err) => res.json(err));

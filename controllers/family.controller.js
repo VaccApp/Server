@@ -31,6 +31,7 @@ module.exports.detail = async (req, res, next) => {
     const family = await Family.findById(id)
       .populate("children")
       .populate("parents");
+    console.log("family", family);
     return res.status(200).json(family);
   } catch (error) {
     next(error);
