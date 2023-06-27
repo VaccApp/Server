@@ -2,6 +2,7 @@ const Family = require("../models/Family.model");
 
 module.exports.list = async (req, res, next) => {
   try {
+    console.log("Anna ID", req.payload);
     const families = await Family.find()
       .populate("children")
       .populate("parents");
@@ -32,7 +33,7 @@ module.exports.detail = async (req, res, next) => {
       .populate("children")
       .populate("parents");
     console.log("family", family);
-    return res.status(200).json(family);
+    return res.status(200).json(family, req.payload);
   } catch (error) {
     next(error);
   }
