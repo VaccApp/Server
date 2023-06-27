@@ -23,7 +23,6 @@ router.post("/:receiverId", (req, res, next) => {
     status,
   })
     .then((newVaccine) => {
-      console.log(newVaccine);
       return Child.findByIdAndUpdate(
         receiverId,
         { $push: { vaccines: newVaccine } },
@@ -42,7 +41,7 @@ router.get("/:id", (req, res, next) => {
   const { id } = req.params;
 
   Vaccine.findById(id)
-    .then((vaccine) => res.json(vaccine))
+    .then((vaccine) => res.status(200).json(vaccine))
     .catch((err) => res.json(err));
 });
 

@@ -7,7 +7,7 @@ const childSchema = new Schema(
       type: String,
       required: [true, "El campo nombre es requerido."],
     },
-    birthDate: {
+    birthdate: {
       type: Date,
       required: [true, "La fecha de nacimiento es obligatoria."],
     },
