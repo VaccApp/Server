@@ -30,32 +30,30 @@ router.post("/:receiverId", (req, res, next) => {
       );
     })
     .then((response) => {
-      console.log(response);
-
       res.json(response);
     })
     .catch((err) => res.json(err));
 });
+//AQUI VUELVO
+router.get("/:vaccineId", (req, res, next) => {
+  const { vaccineId } = req.params;
 
-router.get("/:id", (req, res, next) => {
-  const { id } = req.params;
-
-  Vaccine.findById(id)
+  Vaccine.findById(vaccineId)
     .then((vaccine) => res.status(200).json(vaccine))
     .catch((err) => res.json(err));
 });
 
-router.put("/:id", (req, res, next) => {
-  const { id } = req.params;
-  const { name, dose, disease, creator, expires, batch } = req.body;
+router.put("/:vaccineId", (req, res, next) => {
+  const { vaccineId } = req.params;
+  const { name, dose, disease, creator, expires, batch, status } = req.body;
 
   Vaccine.findByIdAndUpdate(
     id,
-    { name, dose, disease, creator, expires, batch },
+    { name, dose, disease, creator, expires, batch, status },
     { new: true }
   )
-    .then((updatedVaccine) => res.json(updatedVaccine))
-    .catch((err) => res.json(err));
+    .then((updatedVaccine) => res.status(200).json(updatedVaccine))
+    .catch((err) => res.status(500).json(err));
 });
 
 router.delete("/:id", (req, res, next) => {
