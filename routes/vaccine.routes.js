@@ -34,7 +34,7 @@ router.post("/:receiverId", (req, res, next) => {
     })
     .catch((err) => res.json(err));
 });
-//AQUI VUELVO
+
 router.get("/:vaccineId", (req, res, next) => {
   const { vaccineId } = req.params;
 
@@ -48,7 +48,7 @@ router.put("/:vaccineId", (req, res, next) => {
   const { name, dose, disease, creator, expires, batch, status } = req.body;
 
   Vaccine.findByIdAndUpdate(
-    id,
+    vaccineId,
     { name, dose, disease, creator, expires, batch, status },
     { new: true }
   )
