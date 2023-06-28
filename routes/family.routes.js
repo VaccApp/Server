@@ -16,4 +16,6 @@ router.get("/:id", familyController.detail);
 
 router.put("/:id", familyController.edit);
 
+router.delete("/:id", familyController.delete);
+
 module.exports = router;

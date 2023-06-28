@@ -9,9 +9,9 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
-  const { name, birthDate, familyId } = req.body;
+  const { name, birthdate, familyId } = req.body;
 
-  Child.create({ name, birthDate, family: familyId })
+  Child.create({ name, birthdate, family: familyId })
     .then((newChild) => {
       console.log(familyId);
       return Family.findByIdAndUpdate(
