@@ -31,9 +31,9 @@ module.exports.create = async (req, res, next) => {
 };
 
 module.exports.detail = async (req, res, next) => {
-  const { id } = req.params;
+  const { familyId } = req.params;
   try {
-    const family = await Family.findById(id)
+    const family = await Family.findById(familyId)
       .populate("children")
       .populate("parents");
     console.log("family", family);
@@ -44,13 +44,13 @@ module.exports.detail = async (req, res, next) => {
 };
 
 module.exports.edit = async (req, res, next) => {
-  const { id } = req.params;
+  const { familyId } = req.params;
   const { surname, parents, children } = req.body;
   try {
     if (!req.body) {
       return res.status(400).json({ message: "Bad request: empty req.body" });
     }
-    const familyToEdit = await Family.findByIdAndUpdate(id, req.body, {
+    const familyToEdit = await Family.findByIdAndUpdate(familyId, req.body, {
       new: true,
     })
       .then((updatedFamily) => res.json(updatedFamily))
@@ -61,10 +61,10 @@ module.exports.edit = async (req, res, next) => {
 };
 
 module.exports.delete = async (req, res, next) => {
-  const { id } = req.params;
+  const { familyId } = req.params;
 
   try {
-    const familyToDelete = await Family.findByIdAndDelete(id);
+    const familyToDelete = await Family.findByIdAndDelete(familyId);
     return res.status(200).json("Familia borrada correctamente");
   } catch (error) {
     next(error);

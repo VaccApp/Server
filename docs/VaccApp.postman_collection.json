@@ -1,0 +1,399 @@
+{
+	"info": {
+		"_postman_id": "b69947b4-d60b-496d-a83f-2656361e1a27",
+		"name": "VaccApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27098300",
+		"_collection_link": "https://bold-equinox-597575.postman.co/workspace/VaccApp~ff76f79a-ee4a-40a9-9960-a970b3666d9f/collection/27098300-b69947b4-d60b-496d-a83f-2656361e1a27?action=share&creator=27098300&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Family",
+			"item": [
+				{
+					"name": "/family",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5005/family",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"family"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/family/:familyId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5005/family/:familyId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"family",
+								":familyId"
+							],
+							"variable": [
+								{
+									"key": "familyId",
+									"value": "649b3c3903430498d2e38b8a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/family/",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5005/family/:familyId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"family",
+								":familyId"
+							],
+							"variable": [
+								{
+									"key": "familyId",
+									"value": "649b3c3903430498d2e38b8a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/family/:familyId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5005/family/:familyId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"family",
+								":familyId"
+							],
+							"variable": [
+								{
+									"key": "familyId",
+									"value": "649c6fc80628c8c9e888864a"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vaccines",
+			"item": [
+				{
+					"name": "/vaccines",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5005/vaccines",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"vaccines"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/vaccines/:receiverId",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"COVID1000\",\n  \"dose\": 333,\n  \"disease\": \"catarro\",\n  \"creator\": \"Antigua\",\n  \"expires\": \"2023-06-26T10:27:36.207Z\",\n  \"batch\": \"1234cinco6\",\n  \"status\": \"PUESTA\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5005/vaccines/:receiverId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"vaccines",
+								":receiverId"
+							],
+							"variable": [
+								{
+									"key": "receiverId",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/vaccines/:vaccineId",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"COVID1000\",\n  \"dose\": 333,\n  \"disease\": \"catarro\",\n  \"creator\": \"Antigua\",\n  \"expires\": \"2023-06-26T10:27:36.207Z\",\n  \"batch\": \"1234cinco6\",\n  \"status\": \"PUESTA\"\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5005/vaccines/:vaccineId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"vaccines",
+								":vaccineId"
+							],
+							"variable": [
+								{
+									"key": "vaccineId",
+									"value": "6499d30d2c0d25e1f052c979"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/vaccines/:vaccineId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5005/vaccines/:vaccineId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"vaccines",
+								":vaccineId"
+							],
+							"variable": [
+								{
+									"key": "vaccineId",
+									"value": "649c75f3814c7c2441363844"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Child",
+			"item": [
+				{
+					"name": "/child",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5005/child",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"child"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/child/:childId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5005/child/:childId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"child",
+								":childId"
+							],
+							"variable": [
+								{
+									"key": "childId",
+									"value": "64996efdf48bdae733e1c277"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/child",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Aurelio\",\n    \"birthdate\": \"2023-06-26T10:27:36.207Z\",\n    \"familyId\": \"649b3c3903430498d2e38b8a\"\n}\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5005/child",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"child"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/child/:childId",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Arsenio\",\n    \"birthdate\": \"2023-06-26T10:27:36.207Z\",\n    \"familyId\": \"649b3c3903430498d2e38b8a\"\n}\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5005/child/:childId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"child",
+								":childId"
+							],
+							"variable": [
+								{
+									"key": "childId",
+									"value": "6499726af48bdae733e1c28a"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/child/:childId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5005/child/:childId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5005",
+							"path": [
+								"child",
+								":childId"
+							],
+							"variable": [
+								{
+									"key": "childId",
+									"value": "649974d4ac88e2ef436fcbf5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "id de familia",
+			"value": "familyId"
+		}
+	]
+}

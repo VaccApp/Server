@@ -12,10 +12,10 @@ router.get("/", familyController.list);
 
 router.post("/", familyController.create);
 
-router.get("/:id", familyController.detail);
+router.get("/:familyId", familyController.detail);
 
-router.put("/:id", familyController.edit);
+router.put("/:familyId", familyController.edit);
 
-router.delete("/:id", familyController.delete);
+router.delete("/:familyId", familyController.delete);
 
 module.exports = router;
