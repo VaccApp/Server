@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/User.model");
 
+const Family = require("../models/Family.model");
+
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 const router = express.Router();
@@ -44,7 +46,9 @@ router.post("/signup", (req, res, next) => {
 
   const dniRegex = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i;
   if (!dniRegex.test(dni)) {
-    res.status(400).json({ message: "Proporciona un DNI válido: 8 números y una letra mayúscula." });
+    res.status(400).json({
+      message: "Proporciona un DNI válido: 8 números y una letra mayúscula.",
+    });
     return;
   }
 
@@ -77,7 +81,26 @@ router.post("/signup", (req, res, next) => {
 
       // Create the new user in the database
       // We return a pending promise, which allows us to chain another `then`
-      return User.create({ email, password: hashedPassword, name, surname, dni, family: [] });
+      return User.create({
+        email,
+        password: hashedPassword,
+        name,
+        surname,
+        dni,
+        family: [],
+      });
+    })
+    .then((createdUser) => {
+      const { surname, _id } = createdUser;
+      return Family.create({ surname, parents: [_id], children: [] }).then(
+        (createdFamily) => {
+          return User.findByIdAndUpdate(
+            _id,
+            { $push: { family: createdFamily._id } },
+            { new: true }
+          );
+        }
+      );
     })
     .then((createdUser) => {
       // Deconstruct the newly created user object to omit the password
