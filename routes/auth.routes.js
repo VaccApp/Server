@@ -13,10 +13,16 @@ const router = express.Router();
 const saltRounds = 10;
 
 router.post("/signup", (req, res, next) => {
-  const { email, password, name } = req.body;
+  const { email, password, name, surname, dni } = req.body;
 
-  if (email === "" || password === "" || name === "") {
-    res.status(400).json({ message: "Provide email, password and name" });
+  if (
+    email === "" ||
+    password === "" ||
+    name === "" ||
+    surname === "" ||
+    dni === ""
+  ) {
+    res.status(400).json({ message: "Debes rellenar todos los campos." });
     return;
   }
 
@@ -36,6 +42,26 @@ router.post("/signup", (req, res, next) => {
     return;
   }
 
+  const dniRegex = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i;
+  if (!dniRegex.test(dni)) {
+    res.status(400).json({ message: "Proporciona un DNI válido: 8 números y una letra mayúscula." });
+    return;
+  }
+
+  function dniLetter(dni) {
+    const dniOnlyNumbers = dni.slice(0, 8);
+    const lockup = "TRWAGMYFPDXBNJZSQVHLCKE";
+    const letter = lockup.charAt(dniOnlyNumbers % 23);
+    return letter;
+  }
+
+  if (dniLetter(dni) !== dni.charAt(8)) {
+    res.status(400).json({ message: "Proporciona un DNI válido." });
+    return;
+  } else {
+    console.log("DNI VALIDO");
+  }
+
   // Check the users collection if a user with the same email already exists
   User.findOne({ email })
     .then((foundUser) => {
@@ -51,7 +77,7 @@ router.post("/signup", (req, res, next) => {
 
       // Create the new user in the database
       // We return a pending promise, which allows us to chain another `then`
-      return User.create({ email, password: hashedPassword, name });
+      return User.create({ email, password: hashedPassword, name, surname, dni, family: [] });
     })
     .then((createdUser) => {
       // Deconstruct the newly created user object to omit the password
