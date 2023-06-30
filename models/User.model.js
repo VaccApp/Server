@@ -19,12 +19,16 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    // dni: {
-    //   type: String,
-    //   required: [true, "El DNI es requerido."],
-    // },
-
-    // families: [{ type: Schema.Types.ObjectId, ref: "Family" }],
+    surname: {
+      type: String,
+      required: [true, "El apellido es requerido."],
+    },
+    dni: {
+      type: String,
+      unique: true,
+      required: [true, "El DNI es requerido."],
+    },
+    family: [{ type: Schema.Types.ObjectId, ref: "Family" }],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
