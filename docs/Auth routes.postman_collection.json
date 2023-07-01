@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"jonan@gmail.com\",\r\n    \"password\": \"Contraseña1234\",\r\n    \"name\": \"Jonan\"\r\n}",
+					"raw": "{\r\n    \"email\": \"jonander@gmail.com\",\r\n    \"password\": \"Contraseña1234\",\r\n    \"name\": \"Jonan\",\r\n    \"surname\": \"Pedrayes\",\r\n    \"dni\": \"53620311C\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -42,7 +42,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"jonan@gmail.com\",\r\n    \"password\": \"Contraseña1234\"\r\n}",
+					"raw": "{\r\n    \"email\": \"jonander@gmail.com\",\r\n    \"password\": \"Contraseña1234\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -72,7 +72,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDljNzc1ZTAwM2IwODI2ZjQ1Y2MwZjgiLCJlbWFpbCI6ImpvbmFuQGdtYWlsLmNvbSIsIm5hbWUiOiJKb25hbiIsImlhdCI6MTY4Nzk3NjQzNywiZXhwIjoxNjg3OTk4MDM3fQ.Bqf5kMv8QKA6k4N9Is11J_O1iU_xWpI1DeMmzrcYgXA",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDlmZTE5ZDYzNWNkMzI4ZGM5YmUyOGQiLCJlbWFpbCI6ImpvbmFuZGVyQGdtYWlsLmNvbSIsIm5hbWUiOiJKb25hbiIsImlhdCI6MTY4ODIwNDUwNiwiZXhwIjoxNjg4MjI2MTA2fQ.e0Y_lXE1ClmLPW3b3ELtGwrDJBy3yj5zr8iL8PeIf4I",
 							"type": "string"
 						}
 					]
