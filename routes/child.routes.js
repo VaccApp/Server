@@ -10,13 +10,47 @@ router.get("/", (req, res, next) => {
 
 router.post("/", (req, res, next) => {
   const { name, birthdate, familyId } = req.body;
+  const vaccine1 = {
+    name: "vacuna",
+    dose: 66,
+    disease: "celiaquía",
+    creator: "celiaco",
+    expires: "2023-12-31T18:25:43.511Z",
+    batch: "1234abcd",
+    status: "PUESTA",
+  };
+  const vaccine2 = {
+    name: "vacuna2",
+    dose: 66,
+    disease: "celiaquía",
+    creator: "celiaco",
+    expires: "2023-12-31T18:25:43.511Z",
+    batch: "1234abcd",
+    status: "PUESTA",
+  };
+  const vaccine3 = {
+    name: "vacuna3",
+    dose: 66,
+    disease: "celiaquía",
+    creator: "celiaco",
+    expires: "2023-12-31T18:25:43.511Z",
+    batch: "1234abcd",
+    status: "PUESTA",
+  };
 
-  Child.create({ name, birthdate, family: familyId })
+  Child.create({
+    name,
+    birthdate,
+    family: familyId,
+    vaccines: [vaccine1, vaccine2, vaccine3],
+  })
     .then((newChild) => {
-      console.log(familyId);
+      // console.log(newChild);
       return Family.findByIdAndUpdate(
         familyId,
-        { $push: { children: newChild } },
+        {
+          $push: { children: newChild, vaccines: vaccine1, vaccine2, vaccine3 },
+        },
         { new: true }
       );
     })
