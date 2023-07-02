@@ -16,6 +16,8 @@ router.get("/:familyId", familyController.detail);
 
 router.put("/:familyId", familyController.edit);
 
+router.post("/:familyId/invite", familyController.invite);
+
 router.delete("/:familyId", familyController.delete);
 
 module.exports = router;

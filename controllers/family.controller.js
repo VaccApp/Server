@@ -1,4 +1,6 @@
 const Family = require("../models/Family.model");
+const User = require("../models/User.model");
+const nodemailer = require("nodemailer");
 
 module.exports.list = async (req, res, next) => {
   try {
@@ -55,6 +57,32 @@ module.exports.edit = async (req, res, next) => {
     })
       .then((updatedFamily) => res.json(updatedFamily))
       .catch((error) => res.json(error));
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.invite = async (req, res, next) => {
+  const { familyId } = req.params;
+  const { email } = req.body;
+  try {
+    const family = await Family.findById(familyId);
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      },
+    });
+    const info = await transporter.sendMail({
+      from: `"VaccApp" <${process.env.GMAIL_USER}>`,
+      to: email,
+      subject: `Invitación a unirse a la familia ${family.surname}`,
+      html: `<h1>¡Hola!</h1>
+      <p>Has sido invitado a unirte a la familia ${family.surname} en VaccApp. Haz click <a href="http://localhost:5005/join-family/${familyId}">aquí</a> para aceptar la invitación.</p>`,
+    });
+    console.log("Message sent: %s", info.messageId);
+    return res.status(200).json("Email enviado correctamente");
   } catch (error) {
     next(error);
   }
