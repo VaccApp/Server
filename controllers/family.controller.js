@@ -68,14 +68,16 @@ module.exports.invite = async (req, res, next) => {
   try {
     const family = await Family.findById(familyId);
     const transporter = nodemailer.createTransport({
-      service: "Gmail",
+      host: "smtp-mail.outlook.com",
+      port: 587,
+      secure: false,
       auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_PASS,
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS,
       },
     });
     const info = await transporter.sendMail({
-      from: `"VaccApp" <${process.env.GMAIL_USER}>`,
+      from: `"VaccApp" <${process.env.MAIL_USER}>`,
       to: email,
       subject: `Invitación a unirse a la familia ${family.surname}`,
       html: `<h1>¡Hola!</h1>
