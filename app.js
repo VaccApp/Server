@@ -32,6 +32,9 @@ app.use("/vaccines", vaccineRoutes);
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
+const centersRoutes = require("./routes/centers.routes");
+app.use("/centers", centersRoutes);
+
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
 

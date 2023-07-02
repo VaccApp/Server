@@ -1,10 +1,20 @@
 const router = require("express").Router();
 const Vaccine = require("../models/Vaccine.model");
 const Child = require("../models/Child.model");
+const axios = require("axios");
+
+const REALAPI_URL = "http://localhost:4001/api";
 
 router.get("/", (req, res, next) => {
   Vaccine.find()
     .then((vaccines) => res.json(vaccines))
+    .catch((err) => res.json(err));
+});
+
+router.get("/calendar", (req, res, next) => {
+  axios
+    .get(`${REALAPI_URL}/vaccines`)
+    .then((response) => res.status(200).json(response.data))
     .catch((err) => res.json(err));
 });
 
