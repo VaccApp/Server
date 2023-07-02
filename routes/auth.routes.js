@@ -123,7 +123,13 @@ router.post("/join-family/:familyId", (req, res, next) => {
   const { familyId } = req.params;
   const { email, password, name, surname, dni } = req.body;
 
-  if (email === "" || password === "" || name === "" || surname === "" || dni === "") {
+  if (
+    email === "" ||
+    password === "" ||
+    name === "" ||
+    surname === "" ||
+    dni === ""
+  ) {
     res.status(400).json({ message: "Debes rellenar todos los campos." });
     return;
   }
@@ -193,18 +199,22 @@ router.post("/join-family/:familyId", (req, res, next) => {
     })
     .then((createdUser) => {
       const { _id } = createdUser;
-      // Ahora añadimos el usuario a la familia y añadimos su apellido al de la familia
       return Family.findByIdAndUpdate(
         familyId,
-        { $push: { parents: _id }, $set: { surname: family.surname + "-" + surname } },
+        { $push: { parents: _id } },
         { new: true }
       ).then((updatedFamily) => {
-        // Ahora añadimos la familia al usuario
         return User.findByIdAndUpdate(
           _id,
           { $push: { family: updatedFamily._id } },
           { new: true }
-        );
+        ).then((updatedUser) => {
+          return Family.findByIdAndUpdate(
+            updatedFamily._id,
+            { surname: updatedFamily.surname + "-" + updatedUser.surname },
+            { new: true }
+          );
+        });
       });
     })
     .then((createdUser) => {
