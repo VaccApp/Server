@@ -9,10 +9,14 @@ const childSchema = new Schema(
     },
     birthdate: {
       type: Date,
-      required: [true, "La fecha de nacimiento es obligatoria."],
+      required: [false, "La fecha de nacimiento no es obligatoria."],
+    },
+    healthcard: {
+      type: String,
+      required: [true, "La tarjeta sanitaria es obligatoria"],
     },
     family: { type: Schema.Types.ObjectId, ref: "Family" },
-    vaccines: [],
+    vaccines: [{ type: Schema.Types.ObjectId, ref: "Vaccine" }],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
@@ -23,5 +27,3 @@ const childSchema = new Schema(
 const Child = model("Child", childSchema);
 
 module.exports = Child;
-
-// { type: Schema.Types.ObjectId, ref: "Vaccine" }

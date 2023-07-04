@@ -3,6 +3,8 @@ const Child = require("../models/Child.model");
 const Family = require("../models/Family.model");
 const axios = require("axios");
 
+// const regularVaccines = require("../db/vaccines.json");
+
 const REALAPI_URL = "http://localhost:4001/api";
 
 router.get("/", (req, res, next) => {
@@ -12,43 +14,25 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
-  const { name, birthdate, familyId } = req.body;
-  // const vaccine1 = {
-  //   name: "vacuna",
-  //   dose: 66,
-  //   disease: "celiaquía",
-  //   creator: "celiaco",
-  //   expires: "2023-12-31T18:25:43.511Z",
-  //   batch: "1234abcd",
-  //   status: "PUESTA",
-  // };
-  // const vaccine2 = {
-  //   name: "vacuna2",
-  //   dose: 66,
-  //   disease: "celiaquía",
-  //   creator: "celiaco",
-  //   expires: "2023-12-31T18:25:43.511Z",
-  //   batch: "1234abcd",
-  //   status: "PUESTA",
-  // };
-  // const vaccine3 = {
-  //   name: "vacuna3",
-  //   dose: 66,
-  //   disease: "celiaquía",
-  //   creator: "celiaco",
-  //   expires: "2023-12-31T18:25:43.511Z",
-  //   batch: "1234abcd",
-  //   status: "PUESTA",
-  // };
+  const { name, birthdate, familyId, healthcard } = req.body;
+
+  // const findData = Citizen.find({ healthcard: healthcard }).then(
+  //   (foundCitizen) => {
+  //     console.log(foundCitizen);
+  //   }
+  // );
+
+  // const vaccines = {};
 
   Child.create({
     name,
     birthdate,
+    healthcard,
     family: familyId,
-    vaccines: [],
+    // vaccines: regularVaccines,
   })
     .then((newChild) => {
-      // console.log(newChild);
+      console.log(newChild);
       return Family.findByIdAndUpdate(
         familyId,
         {
@@ -61,12 +45,17 @@ router.post("/", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.get("/:childId/sync", (req, res, next) => {
+router.get("/sync", (req, res, next) => {
   const { childId } = req.params;
   axios
-    .get(`${REALAPI_URL}/citizen/${childId}`)
-    .then((response) => res.status(200).json(response.data))
+    .get(`${REALAPI_URL}/citizen`)
+    .then((response) => {
+      res.status(200).json(response.data);
+    })
     .catch((error) => console.log(error));
+  // .get(`${REALAPI_URL}/citizen/${childId}`)
+  // .then((response) => res.status(200).json(response.data))
+  // .catch((error) => console.log(error));
 });
 
 router.get("/:id", (req, res, next) => {

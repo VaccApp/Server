@@ -288,4 +288,12 @@ router.get("/verify", isAuthenticated, (req, res, next) => {
   res.status(200).json(req.payload);
 });
 
+// router.get("/logout", (req, res, next) => {
+//   const logout = () => {
+//     localStorage.removeItem("user");
+//     res.status(200).json("Te has desconectado correctamente");
+//     console.log("session finished");
+//   };
+// });
+
 module.exports = router;
