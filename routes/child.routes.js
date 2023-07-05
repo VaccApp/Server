@@ -2,18 +2,19 @@ const router = require("express").Router();
 const Child = require("../models/Child.model");
 const Family = require("../models/Family.model");
 const axios = require("axios");
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 // const regularVaccines = require("../db/vaccines.json");
 
 const REALAPI_URL = "http://localhost:4001/api";
 
-router.get("/", (req, res, next) => {
+router.get("/", isAuthenticated, (req, res, next) => {
   Child.find()
     .then((child) => res.json(child))
     .catch((err) => res.json(err));
 });
 
-router.post("/", (req, res, next) => {
+router.post("/", isAuthenticated, (req, res, next) => {
   const { name, birthdate, familyId, healthcard } = req.body;
 
   // const findData = Citizen.find({ healthcard: healthcard }).then(
@@ -45,7 +46,7 @@ router.post("/", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.get("/:childId/sync", async (req, res, next) => {
+router.get("/:childId/sync", isAuthenticated, async (req, res, next) => {
   const { childId } = req.params;
 
   const child = await Child.findById(childId);
@@ -80,7 +81,7 @@ router.get("/:childId/sync", async (req, res, next) => {
     .catch((err) => console.log(err));
 });
 
-router.get("/:id", (req, res, next) => {
+router.get("/:id", isAuthenticated, (req, res, next) => {
   const { id } = req.params;
   Child.findById(id)
     .then((child) => res.status(200).json(child))
@@ -96,7 +97,7 @@ router.put("/:id", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", isAuthenticated, (req, res, next) => {
   const { id } = req.params;
 
   Child.findByIdAndDelete(id)
