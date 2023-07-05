@@ -82,8 +82,8 @@ router.get("/:childId/calendar", (req, res, next) => {
     .get(`${REALAPI_URL}/vaccines`)
     .then((response) => {
       const vaccines = response.data;
-      const vaccinationAge = vaccines.map((vaccine) => vaccine.vaccinationage);
-      const vaccineName = vaccines.map((vaccine) => vaccine.vaccinename);
+      const vaccinationAge = vaccines.map((vaccine) => vaccine.vaccinationAge);
+      const vaccineName = vaccines.map((vaccine) => vaccine.vaccineName);
       const vaccineId = vaccines.map((vaccine) => vaccine._id);
 
       Child.findById(childId)
