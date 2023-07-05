@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Child = require("../models/Child.model");
+const Vaccine = require("../models/Vaccine.model");
 const Family = require("../models/Family.model");
 const axios = require("axios");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
@@ -62,23 +63,41 @@ router.get("/:childId/sync", isAuthenticated, async (req, res, next) => {
     .get(`${REALAPI_URL}/${healthcard}`, {
       params: queryParams,
     })
-    .then((response) => {
-      // console.log("RESPONSE", response.data);
-      let childVaccines = child.vaccines;
-      const apiVaccines = response.data[0].vaccines;
+    .then(async ({ data }) => {
+      const vaccinesFromApi = data.vaccines.map((e) => ({
+        name: e.vaccineName,
+        vaccinationAge: e.vaccinationAge,
+      }));
+      // console.log("VACCINE FROM API", vaccineFromApi);
+      const newVaccines = await Vaccine.create(vaccinesFromApi);
+      console.log(newVaccines);
+      const vaccIds = newVaccines.map((v) => v._id);
+      // let childVaccines = child.vaccines;
+      // const apiVaccines = response.data[0].vaccines;
       // console.log("childVaccines: ", childVaccines);
       // console.log("apiVaccines: ", apiVaccines);
+      // const returnedVaccines = Object.assign(childVaccines, apiVaccines);
+      // console.log("assign: ", childVaccines);
 
-      if (childVaccines.length === 0) {
-        childVaccines = [...apiVaccines];
-      }
+      // if (childVaccines.length === 0) {
+      //   childVaccines = [...apiVaccines];
+      //   child.vaccines = childVaccines;
+      // }
       // console.log("SI?: ", childVaccines);
-      const updatedChild = Child.findByIdAndUpdate(childId, {
-        $push: { vaccines: childVaccines },
-      });
-      console.log("childId: ", childId, "Update: ", updatedChild._update);
+      const updatedChild = await Child.findByIdAndUpdate(
+        childId,
+        {
+          $push: { vaccines: vaccIds },
+        },
+        { new: true }
+      );
+
+      res.status(200).json(updatedChild);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
 });
 
 router.get("/:id", isAuthenticated, (req, res, next) => {
