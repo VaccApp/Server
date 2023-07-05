@@ -45,12 +45,25 @@ router.post("/", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.get("/sync", (req, res, next) => {
+router.get("/:childId/sync", async (req, res, next) => {
   const { childId } = req.params;
-  axios
-    .get(`${REALAPI_URL}/citizen`)
+
+  const foundChild = await Child.findById(childId);
+
+  console.log("LN 53 childroutes", foundChild);
+  // const queryParams = {
+  //   name: foundChild.name,
+  //   healthcard: foundChild.healthcard,
+  // };
+
+  const apiCall = await axios
+    .get(`${REALAPI_URL}/:healthcard`)
+    // , {
+    //   params: queryParams,
+    // })
     .then((response) => {
-      res.status(200).json(response.data);
+      console.log("RESPOOOONSE:", response);
+      // res.status(200).json(response.data);
     })
     .catch((error) => console.log(error));
   // .get(`${REALAPI_URL}/citizen/${childId}`)
