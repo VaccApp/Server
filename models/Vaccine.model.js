@@ -4,27 +4,27 @@ const vaccineSchema = new Schema(
   {
     name: {
       type: String,
-      required: [true, "Nombre de la vacuna requerido."],
+      required: [false, "Nombre de la vacuna requerido."],
     },
     dose: {
       type: Number,
-      required: [true, "Dosis requeridas."],
+      required: [false, "Dosis requeridas."],
     },
     disease: {
       type: String,
-      required: [true, "Enfermedad que combate requerida."],
+      required: [false, "Enfermedad que combate requerida."],
     },
     creator: {
       type: String,
-      required: [true, "Fabricante requerido"],
+      required: [false, "Fabricante requerido"],
     },
     expires: {
       type: Date,
-      required: [true, "La fecha de caducidad es necesaria"],
+      required: [false, "La fecha de caducidad es necesaria"],
     },
     batch: {
       type: String,
-      required: [true, "El número de lote es necesario."],
+      required: [false, "El número de lote es necesario."],
     },
     status: {
       type: String,

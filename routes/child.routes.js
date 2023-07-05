@@ -48,73 +48,50 @@ router.post("/", (req, res, next) => {
 router.get("/:childId/sync", async (req, res, next) => {
   const { childId } = req.params;
 
-  const foundChild = await Child.findById(childId);
+  const child = await Child.findById(childId);
 
-  console.log("LN 53 childroutes", foundChild);
-  // const queryParams = {
-  //   name: foundChild.name,
-  //   healthcard: foundChild.healthcard,
-  // };
+  const healthcard = child.healthcard;
+  // console.log("LN 53 childroutes", healthcard);
+  const queryParams = {
+    name: child.name,
+    healthcard: child.healthcard,
+  };
 
-  const apiCall = await axios
-    .get(`${REALAPI_URL}/:healthcard`)
-    // , {
-    //   params: queryParams,
-    // })
+  axios
+    .get(`${REALAPI_URL}/${healthcard}`, {
+      params: queryParams,
+    })
     .then((response) => {
-      console.log("RESPOOOONSE:", response);
+      console.log("RESPONSE", response.data);
+      const childVaccines = child.vaccines;
+      const apiVaccines = response.data[0].vaccines;
+      console.log("childVaccines: ", childVaccines);
+      console.log("apiVaccines: ", apiVaccines);
+      if (child.vaccines.length === 0) {
+        // const vaccinesArr = childVaccines.concat(apiVaccines);
+        const updatedChild = Child.findByIdAndUpdate(childId, apiVaccines).then(
+          (updatedChild) => {
+            console.log("updatedChild: ", updatedChild.vaccines);
+          }
+        );
+      }
+      // for (let i = 0; i < response.data[0].vaccines.length; i++) {
+      //   console.log("response", response.data[0].vaccines[i]);
+      //   child.vaccines.push(response.data[0].vaccines[i]);
+      // }
+
+      // console.log("ChildWithVaccines?", child);
+      // console.log("response", response.data[0].vaccines[i]);
+      console.log("child", child.vaccines);
       // res.status(200).json(response.data);
     })
     .catch((error) => console.log(error));
-  // .get(`${REALAPI_URL}/citizen/${childId}`)
-  // .then((response) => res.status(200).json(response.data))
-  // .catch((error) => console.log(error));
 });
 
 router.get("/:id", (req, res, next) => {
   const { id } = req.params;
   Child.findById(id)
     .then((child) => res.status(200).json(child))
-    .catch((err) => res.json(err));
-});
-
-router.get("/:childId/calendar", (req, res, next) => {
-  const { childId } = req.params;
-  axios
-    .get(`${REALAPI_URL}/vaccines`)
-    .then((response) => {
-      const vaccines = response.data;
-      const vaccinationAge = vaccines.map((vaccine) => vaccine.vaccinationage);
-      const vaccineName = vaccines.map((vaccine) => vaccine.vaccinename);
-      const vaccineId = vaccines.map((vaccine) => vaccine._id);
-
-      Child.findById(childId)
-        .then((child) => {
-          const childAgeInMonths = Math.floor(
-            (new Date() - child.birthdate) / 1000 / 60 / 60 / 24 / 30
-          );
-          console.log("Child age in months", childAgeInMonths);
-          const vaccinesToBeTaken = vaccinationAge.map((age, index) => {
-            if (age - childAgeInMonths <= 1) {
-              return {
-                vaccineName: vaccineName[index],
-                vaccineId: vaccineId[index],
-              };
-            }
-          });
-          const vaccinesToBeTakenFiltered = vaccinesToBeTaken.filter(
-            (vaccine) => vaccine !== undefined
-          );
-          res.status(200).json(vaccinesToBeTakenFiltered);
-          console.log("vaccinesToBeTakenFiltered", vaccinesToBeTakenFiltered);
-          console.log(
-            "Total number of vaccines in this month",
-            vaccinesToBeTakenFiltered.length
-          );
-          // window.alert(`Tienes ${vaccinesToBeTakenFiltered.length} vacunas pendientes durante el próximo mes.`);
-        })
-        .catch((err) => res.json(err));
-    })
     .catch((err) => res.json(err));
 });
 
