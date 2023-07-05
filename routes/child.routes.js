@@ -62,30 +62,22 @@ router.get("/:childId/sync", async (req, res, next) => {
       params: queryParams,
     })
     .then((response) => {
-      console.log("RESPONSE", response.data);
-      const childVaccines = child.vaccines;
+      // console.log("RESPONSE", response.data);
+      let childVaccines = child.vaccines;
       const apiVaccines = response.data[0].vaccines;
-      console.log("childVaccines: ", childVaccines);
-      console.log("apiVaccines: ", apiVaccines);
-      if (child.vaccines.length === 0) {
-        // const vaccinesArr = childVaccines.concat(apiVaccines);
-        const updatedChild = Child.findByIdAndUpdate(childId, apiVaccines).then(
-          (updatedChild) => {
-            console.log("updatedChild: ", updatedChild.vaccines);
-          }
-        );
-      }
-      // for (let i = 0; i < response.data[0].vaccines.length; i++) {
-      //   console.log("response", response.data[0].vaccines[i]);
-      //   child.vaccines.push(response.data[0].vaccines[i]);
-      // }
+      // console.log("childVaccines: ", childVaccines);
+      // console.log("apiVaccines: ", apiVaccines);
 
-      // console.log("ChildWithVaccines?", child);
-      // console.log("response", response.data[0].vaccines[i]);
-      console.log("child", child.vaccines);
-      // res.status(200).json(response.data);
+      if (childVaccines.length === 0) {
+        childVaccines = [...apiVaccines];
+      }
+      // console.log("SI?: ", childVaccines);
+      const updatedChild = Child.findByIdAndUpdate(childId, {
+        $push: { vaccines: childVaccines },
+      });
+      console.log("childId: ", childId, "Update: ", updatedChild._update);
     })
-    .catch((error) => console.log(error));
+    .catch((err) => console.log(err));
 });
 
 router.get("/:id", (req, res, next) => {
@@ -113,3 +105,17 @@ router.delete("/:id", (req, res, next) => {
 });
 
 module.exports = router;
+// childVaccines.push({
+//   vaccinename: apiVaccines[i].vaccinename,
+//   description: apiVaccines[i].description,
+//   vaccinationage: apiVaccines[i].vaccinationage,
+// });
+
+// for (let i = 0; i < response.data[0].vaccines.length; i++) {
+//   console.log("response", response.data[0].vaccines[i]);
+//   child.vaccines.push(response.data[0].vaccines[i]);
+// }
+
+// console.log("ChildWithVaccines?", child);
+// console.log("response", response.data[0].vaccines[i]);
+// res.status(200).json(response.data)
