@@ -93,7 +93,7 @@ router.get("/:childId/calendar", (req, res, next) => {
           );
           console.log("Child age in months", childAgeInMonths);
           const vaccinesToBeTaken = vaccinationAge.map((age, index) => {
-            if (age - childAgeInMonths <= 1) {
+            if (age - childAgeInMonths === 1) {
               return {
                 vaccineName: vaccineName[index],
                 vaccineId: vaccineId[index],
