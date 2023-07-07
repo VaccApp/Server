@@ -107,6 +107,46 @@ router.get("/:id", isAuthenticated, (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
+router.get("/:childId/calendar", (req, res, next) => {
+  const { childId } = req.params;
+  axios
+    .get(`${REALAPI_URL}/vaccines`)
+    .then((response) => {
+      const vaccines = response.data;
+      const vaccinationAge = vaccines.map((vaccine) => vaccine.vaccinationAge);
+      const vaccineName = vaccines.map((vaccine) => vaccine.vaccineName);
+      const vaccineId = vaccines.map((vaccine) => vaccine._id);
+
+      Child.findById(childId)
+        .then((child) => {
+          const childAgeInMonths = Math.floor(
+            (new Date() - child.birthdate) / 1000 / 60 / 60 / 24 / 30
+          );
+          console.log("Child age in months", childAgeInMonths);
+          const vaccinesToBeTaken = vaccinationAge.map((age, index) => {
+            if (age - childAgeInMonths === 1) {
+              return {
+                vaccineName: vaccineName[index],
+                vaccineId: vaccineId[index],
+              };
+            }
+          });
+          const vaccinesToBeTakenFiltered = vaccinesToBeTaken.filter(
+            (vaccine) => vaccine !== undefined
+          );
+          res.status(200).json(vaccinesToBeTakenFiltered);
+          console.log("vaccinesToBeTakenFiltered", vaccinesToBeTakenFiltered);
+          console.log(
+            "Total number of vaccines in this month",
+            vaccinesToBeTakenFiltered.length
+          );
+          // window.alert(`Tienes ${vaccinesToBeTakenFiltered.length} vacunas pendientes durante el próximo mes.`);
+        })
+        .catch((err) => res.json(err));
+    })
+    .catch((err) => res.json(err));
+});
+
 router.put("/:id", (req, res, next) => {
   const { id } = req.params;
   const { name, birthdate } = req.body;
