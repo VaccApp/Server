@@ -5,8 +5,6 @@ const Family = require("../models/Family.model");
 const axios = require("axios");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
-// const regularVaccines = require("../db/vaccines.json");
-
 const REALAPI_URL = "http://localhost:4001/api";
 
 router.get("/", isAuthenticated, (req, res, next) => {
@@ -18,20 +16,11 @@ router.get("/", isAuthenticated, (req, res, next) => {
 router.post("/", isAuthenticated, (req, res, next) => {
   const { name, birthdate, familyId, healthcard } = req.body;
 
-  // const findData = Citizen.find({ healthcard: healthcard }).then(
-  //   (foundCitizen) => {
-  //     console.log(foundCitizen);
-  //   }
-  // );
-
-  // const vaccines = {};
-
   Child.create({
     name,
     birthdate,
     healthcard,
     family: familyId,
-    // vaccines: regularVaccines,
   })
     .then((newChild) => {
       console.log(newChild);
@@ -53,7 +42,6 @@ router.get("/:childId/sync", isAuthenticated, async (req, res, next) => {
   const child = await Child.findById(childId);
 
   const healthcard = child.healthcard;
-  // console.log("LN 53 childroutes", healthcard);
   const queryParams = {
     name: child.name,
     healthcard: child.healthcard,
