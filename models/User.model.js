@@ -1,15 +1,12 @@
 const mongoose = require("mongoose");
 const { Schema, model } = require("mongoose");
 
-// TODO: Please make sure you edit the User model to whatever makes sense in this case
 const userSchema = new Schema(
   {
     email: {
       type: String,
       unique: true,
       required: true,
-      // lowercase: true,
-      // trim: true,
     },
     password: {
       type: String,
@@ -31,7 +28,6 @@ const userSchema = new Schema(
     family: [{ type: Schema.Types.ObjectId, ref: "Family" }],
   },
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
   }
 );

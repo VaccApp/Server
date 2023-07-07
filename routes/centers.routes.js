@@ -3,10 +3,12 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const axios = require("axios");
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
+
 const CENTERAPI_URL =
   "https://datos.madrid.es/egob/catalogo/201544-0-centros-salud.json";
 
-router.get("/centers", (req, res, next) => {
+router.get("/centers", isAuthenticated, (req, res, next) => {
   axios
     .get(`${CENTERAPI_URL}`)
     .then((response) => res.status(200).json(response.data))

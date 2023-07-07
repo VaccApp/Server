@@ -1,54 +1,29 @@
 const router = require("express").Router();
 const Child = require("../models/Child.model");
+const Vaccine = require("../models/Vaccine.model");
 const Family = require("../models/Family.model");
 const axios = require("axios");
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 const REALAPI_URL = "http://localhost:4001/api";
 
-router.get("/", (req, res, next) => {
+router.get("/", isAuthenticated, (req, res, next) => {
   Child.find()
     .then((child) => res.json(child))
     .catch((err) => res.json(err));
 });
 
-router.post("/", (req, res, next) => {
-  const { name, birthdate, familyId } = req.body;
-  // const vaccine1 = {
-  //   name: "vacuna",
-  //   dose: 66,
-  //   disease: "celiaquía",
-  //   creator: "celiaco",
-  //   expires: "2023-12-31T18:25:43.511Z",
-  //   batch: "1234abcd",
-  //   status: "PUESTA",
-  // };
-  // const vaccine2 = {
-  //   name: "vacuna2",
-  //   dose: 66,
-  //   disease: "celiaquía",
-  //   creator: "celiaco",
-  //   expires: "2023-12-31T18:25:43.511Z",
-  //   batch: "1234abcd",
-  //   status: "PUESTA",
-  // };
-  // const vaccine3 = {
-  //   name: "vacuna3",
-  //   dose: 66,
-  //   disease: "celiaquía",
-  //   creator: "celiaco",
-  //   expires: "2023-12-31T18:25:43.511Z",
-  //   batch: "1234abcd",
-  //   status: "PUESTA",
-  // };
+router.post("/", isAuthenticated, (req, res, next) => {
+  const { name, birthdate, familyId, healthcard } = req.body;
 
   Child.create({
     name,
     birthdate,
+    healthcard,
     family: familyId,
-    vaccines: [],
   })
     .then((newChild) => {
-      // console.log(newChild);
+      console.log(newChild);
       return Family.findByIdAndUpdate(
         familyId,
         {
@@ -61,15 +36,46 @@ router.post("/", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.get("/:childId/sync", (req, res, next) => {
+router.get("/:childId/sync", isAuthenticated, async (req, res, next) => {
   const { childId } = req.params;
+
+  const child = await Child.findById(childId);
+
+  const healthcard = child.healthcard;
+  const queryParams = {
+    name: child.name,
+    healthcard: child.healthcard,
+  };
+
   axios
-    .get(`${REALAPI_URL}/citizen/${childId}`)
-    .then((response) => res.status(200).json(response.data))
-    .catch((error) => console.log(error));
+    .get(`${REALAPI_URL}/${healthcard}`, {
+      params: queryParams,
+    })
+    .then(async ({ data }) => {
+      const vaccinesFromApi = data.vaccines.map((e) => ({
+        name: e.vaccineName,
+        vaccinationAge: e.vaccinationAge,
+      }));
+      const newVaccines = await Vaccine.create(vaccinesFromApi);
+      console.log(newVaccines);
+      const vaccIds = newVaccines.map((v) => v._id);
+      const updatedChild = await Child.findByIdAndUpdate(
+        childId,
+        {
+          $push: { vaccines: vaccIds },
+        },
+        { new: true }
+      );
+
+      res.status(200).json(updatedChild);
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
 });
 
-router.get("/:id", (req, res, next) => {
+router.get("/:id", isAuthenticated, (req, res, next) => {
   const { id } = req.params;
   Child.findById(id)
     .then((child) => res.status(200).json(child))
@@ -125,7 +131,7 @@ router.put("/:id", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.delete("/:id", (req, res, next) => {
+router.delete("/:id", isAuthenticated, (req, res, next) => {
   const { id } = req.params;
 
   Child.findByIdAndDelete(id)

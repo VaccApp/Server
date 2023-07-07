@@ -1,0 +1,134 @@
+[{
+  "_id": {
+    "$oid": "64a14d0b4b8ca3c4ea33e56d"
+  },
+  "vaccinename": "Hexavalente",
+  "description": "[HEX-1]",
+  "vaccinationage": 2
+},{
+  "_id": {
+    "$oid": "64a14d184b8ca3c4ea33e56f"
+  },
+  "vaccinename": "Hexavalente",
+  "description": "[HEX-2]",
+  "vaccinationage": 4
+},{
+  "_id": {
+    "$oid": "64a14d2e4b8ca3c4ea33e571"
+  },
+  "vaccinename": "Hexavalente",
+  "description": "[HEX-LR]",
+  "vaccinationage": 11
+},{
+  "_id": {
+    "$oid": "64a14d4e4b8ca3c4ea33e573"
+  },
+  "vaccinename": "Neumococo",
+  "description": "[NEC-L1]",
+  "vaccinationage": 2
+},{
+  "_id": {
+    "$oid": "64a14d5a4b8ca3c4ea33e575"
+  },
+  "vaccinename": "Neumococo",
+  "description": "[NEC-L2]",
+  "vaccinationage": 4
+},{
+  "_id": {
+    "$oid": "64a14d694b8ca3c4ea33e577"
+  },
+  "vaccinename": "Neumococo",
+  "description": "[NEC-LR]",
+  "vaccinationage": 11
+},{
+  "_id": {
+    "$oid": "64a14d8b4b8ca3c4ea33e579"
+  },
+  "vaccinename": "Meningococo B",
+  "description": "[MEB-L1]",
+  "vaccinationage": 2
+},{
+  "_id": {
+    "$oid": "64a14d9c4b8ca3c4ea33e57b"
+  },
+  "vaccinename": "Meningococo B",
+  "description": "[MEB-L2]",
+  "vaccinationage": 4
+},{
+  "_id": {
+    "$oid": "64a14dc14b8ca3c4ea33e57d"
+  },
+  "vaccinename": "Meningococo B",
+  "description": "[MEB-LR]",
+  "vaccinationage": 12
+},{
+  "_id": {
+    "$oid": "64a14ddf4b8ca3c4ea33e57f"
+  },
+  "vaccinename": "Meningococo C",
+  "description": "[MEC-L1]",
+  "vaccinationage": 4
+},{
+  "_id": {
+    "$oid": "64a14dee4b8ca3c4ea33e581"
+  },
+  "vaccinename": "Meningococo C",
+  "description": "[MEC-LR]",
+  "vaccinationage": 12
+},{
+  "_id": {
+    "$oid": "64a14e094b8ca3c4ea33e583"
+  },
+  "vaccinename": "Triple vírica",
+  "description": "[TV-1]",
+  "vaccinationage": 12
+},{
+  "_id": {
+    "$oid": "64a14e2a4b8ca3c4ea33e585"
+  },
+  "vaccinename": "Varicela",
+  "description": "[VAR-L1]",
+  "vaccinationage": 15
+},{
+  "_id": {
+    "$oid": "64a14e534b8ca3c4ea33e587"
+  },
+  "vaccinename": "Tetravírica",
+  "description": "[4V-N2]",
+  "vaccinationage": 48
+},{
+  "_id": {
+    "$oid": "64a14e814b8ca3c4ea33e589"
+  },
+  "vaccinename": "DTPa-VPI",
+  "description": "[DTPI-N]",
+  "vaccinationage": 72
+},{
+  "_id": {
+    "$oid": "64a14ec94b8ca3c4ea33e58b"
+  },
+  "vaccinename": "Meningoc. ACWY",
+  "description": "[ME4-A1]",
+  "vaccinationage": 144
+},{
+  "_id": {
+    "$oid": "64a14edf4b8ca3c4ea33e58d"
+  },
+  "vaccinename": "Varicela*",
+  "description": "[VAR-A1]. Vacunar de varicela a los 12 años si pauta incompleta (2 dosis) y no ha pasado la enfermedad.",
+  "vaccinationage": 144
+},{
+  "_id": {
+    "$oid": "64a14ef84b8ca3c4ea33e58f"
+  },
+  "vaccinename": "Papilomavirus**",
+  "description": "[VPH-A1]. Chicas y chicos (estos, nacidos desde ENE/2011). Citar 6 meses después para la 2ª dosis [VPH-A2].",
+  "vaccinationage": 144
+},{
+  "_id": {
+    "$oid": "64a14f194b8ca3c4ea33e591"
+  },
+  "vaccinename": "Tétanos-difteria",
+  "description": "[TD-A1]",
+  "vaccinationage": 168
+}]
