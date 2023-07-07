@@ -68,22 +68,9 @@ router.get("/:childId/sync", isAuthenticated, async (req, res, next) => {
         name: e.vaccineName,
         vaccinationAge: e.vaccinationAge,
       }));
-      // console.log("VACCINE FROM API", vaccineFromApi);
       const newVaccines = await Vaccine.create(vaccinesFromApi);
       console.log(newVaccines);
       const vaccIds = newVaccines.map((v) => v._id);
-      // let childVaccines = child.vaccines;
-      // const apiVaccines = response.data[0].vaccines;
-      // console.log("childVaccines: ", childVaccines);
-      // console.log("apiVaccines: ", apiVaccines);
-      // const returnedVaccines = Object.assign(childVaccines, apiVaccines);
-      // console.log("assign: ", childVaccines);
-
-      // if (childVaccines.length === 0) {
-      //   childVaccines = [...apiVaccines];
-      //   child.vaccines = childVaccines;
-      // }
-      // console.log("SI?: ", childVaccines);
       const updatedChild = await Child.findByIdAndUpdate(
         childId,
         {
@@ -165,17 +152,3 @@ router.delete("/:id", isAuthenticated, (req, res, next) => {
 });
 
 module.exports = router;
-// childVaccines.push({
-//   vaccinename: apiVaccines[i].vaccinename,
-//   description: apiVaccines[i].description,
-//   vaccinationage: apiVaccines[i].vaccinationage,
-// });
-
-// for (let i = 0; i < response.data[0].vaccines.length; i++) {
-//   console.log("response", response.data[0].vaccines[i]);
-//   child.vaccines.push(response.data[0].vaccines[i]);
-// }
-
-// console.log("ChildWithVaccines?", child);
-// console.log("response", response.data[0].vaccines[i]);
-// res.status(200).json(response.data)
