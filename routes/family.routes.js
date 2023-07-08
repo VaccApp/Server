@@ -14,6 +14,8 @@ router.post("/", familyController.create);
 
 router.get("/:familyId", familyController.detail);
 
+router.post("/:familyId", familyController.addChild);
+
 router.put("/:familyId", familyController.edit);
 
 router.post("/:familyId/invite", familyController.invite);

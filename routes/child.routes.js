@@ -13,29 +13,6 @@ router.get("/", isAuthenticated, (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.post("/", isAuthenticated, (req, res, next) => {
-  const { name, birthdate, familyId, healthcard } = req.body;
-
-  Child.create({
-    name,
-    birthdate,
-    healthcard,
-    family: familyId,
-  })
-    .then((newChild) => {
-      console.log(newChild);
-      return Family.findByIdAndUpdate(
-        familyId,
-        {
-          $push: { children: newChild },
-        },
-        { new: true }
-      );
-    })
-    .then((response) => res.json(response))
-    .catch((err) => res.json(err));
-});
-
 router.get("/:childId/sync", isAuthenticated, async (req, res, next) => {
   const { childId } = req.params;
 

@@ -39,6 +39,30 @@ module.exports.detail = async (req, res, next) => {
   }
 };
 
+module.exports.addChild = async (req, res, next) => {
+  const { familyId } = req.params;
+  const { name, birthdate, healthcard } = req.body;
+
+  Child.create({
+    name,
+    birthdate,
+    healthcard,
+    family: familyId,
+  })
+    .then((newChild) => {
+      console.log(newChild);
+      return Family.findByIdAndUpdate(
+        familyId,
+        {
+          $push: { children: newChild },
+        },
+        { new: true }
+      );
+    })
+    .then((response) => res.json(response))
+    .catch((err) => res.json(err));
+};
+
 module.exports.edit = async (req, res, next) => {
   const { familyId } = req.params;
   const { surname, parents, children } = req.body;
