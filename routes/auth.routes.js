@@ -108,155 +108,152 @@ router.post("/signup", (req, res, next) => {
       console.log(err);
       res.status(500).json({ message: "Internal server error" });
     });
+});
 
-  router.post("/join-family/:familyId", (req, res, next) => {
-    const { familyId } = req.params;
-    const { email, password, name, surname, dni } = req.body;
+router.post("/join-family/:familyId", (req, res, next) => {
+  const { familyId } = req.params;
+  const { email, password, name, surname, dni } = req.body;
 
-    if (
-      email === "" ||
-      password === "" ||
-      name === "" ||
-      surname === "" ||
-      dni === ""
-    ) {
-      res.status(400).json({ message: "Debes rellenar todos los campos." });
-      return;
-    }
+  if (
+    email === "" ||
+    password === "" ||
+    name === "" ||
+    surname === "" ||
+    dni === ""
+  ) {
+    res.status(400).json({ message: "Debes rellenar todos los campos." });
+    return;
+  }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    if (!emailRegex.test(email)) {
-      res.status(400).json({ message: "Proporciona un email válido." });
-      return;
-    }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  if (!emailRegex.test(email)) {
+    res.status(400).json({ message: "Proporciona un email válido." });
+    return;
+  }
 
-    const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-    if (!passwordRegex.test(password)) {
-      console.log("TEST", passwordRegex.test(password));
-      res.status(400).json({
-        message:
-          "La contraseña debe tener al menos 6 caracteres y contener al menos un número, una letra minúscula y una mayúscula.",
+  const passwordRegex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+  if (!passwordRegex.test(password)) {
+    console.log("TEST", passwordRegex.test(password));
+    res.status(400).json({
+      message:
+        "La contraseña debe tener al menos 6 caracteres y contener al menos un número, una letra minúscula y una mayúscula.",
+    });
+    return;
+  }
+
+  const dniRegex = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i;
+  if (!dniRegex.test(dni)) {
+    res.status(400).json({
+      message: "Proporciona un DNI válido: 8 números y una letra mayúscula.",
+    });
+    return;
+  }
+
+  function dniLetter(dni) {
+    const dniOnlyNumbers = dni.slice(0, 8);
+    const lockup = "TRWAGMYFPDXBNJZSQVHLCKE";
+    const letter = lockup.charAt(dniOnlyNumbers % 23);
+    return letter;
+  }
+
+  if (dniLetter(dni) !== dni.charAt(8)) {
+    res.status(400).json({ message: "Proporciona un DNI válido." });
+    return;
+  } else {
+    console.log("DNI VALIDO");
+  }
+
+  User.findOne({ email })
+    .then((foundUser) => {
+      if (foundUser) {
+        res.status(400).json({ message: "El usuario ya existe." });
+        return;
+      }
+
+      const salt = bcrypt.genSaltSync(saltRounds);
+      const hashedPassword = bcrypt.hashSync(password, salt);
+
+      return User.create({
+        email,
+        password: hashedPassword,
+        name,
+        surname,
+        dni,
+        family: [],
       });
-      return;
-    }
-
-    const dniRegex = /^[0-9]{8}[TRWAGMYFPDXBNJZSQVHLCKE]$/i;
-    if (!dniRegex.test(dni)) {
-      res.status(400).json({
-        message: "Proporciona un DNI válido: 8 números y una letra mayúscula.",
-      });
-      return;
-    }
-
-    function dniLetter(dni) {
-      const dniOnlyNumbers = dni.slice(0, 8);
-      const lockup = "TRWAGMYFPDXBNJZSQVHLCKE";
-      const letter = lockup.charAt(dniOnlyNumbers % 23);
-      return letter;
-    }
-
-    if (dniLetter(dni) !== dni.charAt(8)) {
-      res.status(400).json({ message: "Proporciona un DNI válido." });
-      return;
-    } else {
-      console.log("DNI VALIDO");
-    }
-
-    User.findOne({ email })
-      .then((foundUser) => {
-        if (foundUser) {
-          res.status(400).json({ message: "El usuario ya existe." });
-          return;
-        }
-
-        const salt = bcrypt.genSaltSync(saltRounds);
-        const hashedPassword = bcrypt.hashSync(password, salt);
-
-        return User.create({
-          email,
-          password: hashedPassword,
-          name,
-          surname,
-          dni,
-          family: [],
-        });
-      })
-      .then((createdUser) => {
-        const { _id } = createdUser;
-        return Family.findByIdAndUpdate(
-          familyId,
-          { $push: { parents: _id } },
+    })
+    .then((createdUser) => {
+      const { _id } = createdUser;
+      return Family.findByIdAndUpdate(
+        familyId,
+        { $push: { parents: _id } },
+        { new: true }
+      ).then((updatedFamily) => {
+        return User.findByIdAndUpdate(
+          _id,
+          { $push: { family: updatedFamily._id } },
           { new: true }
-        ).then((updatedFamily) => {
-          return User.findByIdAndUpdate(
-            _id,
-            { $push: { family: updatedFamily._id } },
+        ).then((updatedUser) => {
+          return Family.findByIdAndUpdate(
+            updatedFamily._id,
+            { surname: updatedFamily.surname + "-" + updatedUser.surname },
             { new: true }
-          ).then((updatedUser) => {
-            return Family.findByIdAndUpdate(
-              updatedFamily._id,
-              { surname: updatedFamily.surname + "-" + updatedUser.surname },
-              { new: true }
-            );
-          });
+          );
         });
-      })
-      .then((createdUser) => {
-        const { email, name, _id } = createdUser;
-
-        const user = { email, name, _id };
-
-        res.status(201).json({ user: user });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({ message: "Internal server error" });
       });
-  });
+    })
+    .then((createdUser) => {
+      const { email, name, _id } = createdUser;
 
-  router.post("/login", (req, res, next) => {
-    const { email, password } = req.body;
+      const user = { email, name, _id };
 
-    if (email === "" || password === "") {
-      res.status(400).json({ message: "Provide email and password." });
-      return;
-    }
+      res.status(201).json({ user: user });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "Internal server error" });
+    });
+});
 
-    User.findOne({ email })
-      .then((foundUser) => {
-        if (!foundUser) {
-          res.status(401).json({ message: "User not found." });
-          return;
-        }
+router.post("/login", (req, res, next) => {
+  const { email, password } = req.body;
 
-        const passwordCorrect = bcrypt.compareSync(
-          password,
-          foundUser.password
-        );
+  if (email === "" || password === "") {
+    res.status(400).json({ message: "Provide email and password." });
+    return;
+  }
 
-        if (passwordCorrect) {
-          const { _id, email, name } = foundUser;
+  User.findOne({ email })
+    .then((foundUser) => {
+      if (!foundUser) {
+        res.status(401).json({ message: "User not found." });
+        return;
+      }
 
-          const payload = { _id, email, name };
+      const passwordCorrect = bcrypt.compareSync(password, foundUser.password);
 
-          const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
-            algorithm: "HS256",
-            expiresIn: "6h",
-          });
+      if (passwordCorrect) {
+        const { _id, email, name } = foundUser;
 
-          res.status(200).json({ authToken: authToken });
-        } else {
-          res.status(401).json({ message: "Unable to authenticate the user" });
-        }
-      })
-      .catch((err) => next(err));
-  });
+        const payload = { _id, email, name };
 
-  router.get("/verify", isAuthenticated, (req, res, next) => {
-    console.log(`req.payload`, req.payload);
+        const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
+          algorithm: "HS256",
+          expiresIn: "6h",
+        });
 
-    res.status(200).json(req.payload);
-  });
+        res.status(200).json({ authToken: authToken });
+      } else {
+        res.status(401).json({ message: "Unable to authenticate the user" });
+      }
+    })
+    .catch((err) => next(err));
+});
+
+router.get("/verify", isAuthenticated, (req, res, next) => {
+  console.log(`req.payload`, req.payload);
+
+  res.status(200).json(req.payload);
 });
 
 module.exports = router;
