@@ -6,20 +6,20 @@ const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
 const REALAPI_URL = "http://localhost:4001/api";
 
-router.get("/", isAuthenticated, (req, res, next) => {
+router.get("/", (req, res, next) => {
   Vaccine.find()
     .then((vaccines) => res.json(vaccines))
     .catch((err) => res.json(err));
 });
 
-router.get("/calendar", isAuthenticated, (req, res, next) => {
+router.get("/calendar", (req, res, next) => {
   axios
     .get(`${REALAPI_URL}/vaccines`)
     .then((response) => res.status(200).json(response.data))
     .catch((err) => res.json(err));
 });
 
-router.post("/:receiverId", isAuthenticated, (req, res, next) => {
+router.post("/:receiverId", (req, res, next) => {
   const { name, dose, disease, creator, expires, batch, status } = req.body;
 
   const { receiverId } = req.params;
@@ -46,7 +46,7 @@ router.post("/:receiverId", isAuthenticated, (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.get("/:vaccineId", isAuthenticated, (req, res, next) => {
+router.get("/:vaccineId", (req, res, next) => {
   const { vaccineId } = req.params;
 
   Vaccine.findById(vaccineId)
@@ -54,7 +54,7 @@ router.get("/:vaccineId", isAuthenticated, (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.put("/:vaccineId", isAuthenticated, (req, res, next) => {
+router.put("/:vaccineId", (req, res, next) => {
   const { vaccineId } = req.params;
   const { name, dose, disease, creator, expires, batch, status } = req.body;
 
@@ -67,7 +67,7 @@ router.put("/:vaccineId", isAuthenticated, (req, res, next) => {
     .catch((err) => res.status(500).json(err));
 });
 
-router.delete("/:id", isAuthenticated, (req, res, next) => {
+router.delete("/:id", (req, res, next) => {
   const { id } = req.params;
 
   Vaccine.findByIdAndDelete(id)

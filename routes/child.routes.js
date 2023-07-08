@@ -13,7 +13,7 @@ router.get("/", isAuthenticated, (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.get("/:childId/sync", isAuthenticated, async (req, res, next) => {
+router.get("/:childId/sync", async (req, res, next) => {
   const { childId } = req.params;
 
   const child = await Child.findById(childId);
@@ -52,7 +52,7 @@ router.get("/:childId/sync", isAuthenticated, async (req, res, next) => {
     });
 });
 
-router.get("/:id", isAuthenticated, (req, res, next) => {
+router.get("/:id", (req, res, next) => {
   const { id } = req.params;
   Child.findById(id)
     .then((child) => res.status(200).json(child))
@@ -108,7 +108,7 @@ router.put("/:id", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.delete("/:id", isAuthenticated, (req, res, next) => {
+router.delete("/:id", (req, res, next) => {
   const { id } = req.params;
 
   Child.findByIdAndDelete(id)

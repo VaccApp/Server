@@ -21,19 +21,19 @@ const indexRoutes = require("./routes/index.routes");
 app.use("/api", indexRoutes);
 
 const familyRoutes = require("./routes/family.routes");
-app.use("/family", familyRoutes);
+app.use("/family", isAuthenticated, familyRoutes);
 
 const childRoutes = require("./routes/child.routes");
-app.use("/child", childRoutes);
+app.use("/child", isAuthenticated, childRoutes);
 
 const vaccineRoutes = require("./routes/vaccine.routes");
-app.use("/vaccines", vaccineRoutes);
+app.use("/vaccines", isAuthenticated, vaccineRoutes);
 
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
 const centersRoutes = require("./routes/centers.routes");
-app.use("/centers", centersRoutes);
+app.use("/centers", isAuthenticated, centersRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
