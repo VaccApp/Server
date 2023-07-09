@@ -1,6 +1,7 @@
 const Family = require("../models/Family.model");
 const User = require("../models/User.model");
 const nodemailer = require("nodemailer");
+const Child = require("../models/Child.model");
 
 module.exports.list = async (req, res, next) => {
   try {
@@ -59,7 +60,7 @@ module.exports.addChild = async (req, res, next) => {
         { new: true }
       );
     })
-    .then((response) => res.json(response))
+    .then((response) => res.status(201).json(response))
     .catch((err) => res.json(err));
 };
 
