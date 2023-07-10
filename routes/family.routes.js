@@ -8,7 +8,7 @@ const User = require("../models/User.model");
 const Child = require("../models/Child.model.js");
 const familyController = require("../controllers/family.controller");
 
-router.get("/", familyController.list);
+router.get("/", isAuthenticated, familyController.list);
 
 router.post("/", familyController.create);
 
