@@ -6,7 +6,7 @@ const Child = require("../models/Child.model");
 module.exports.list = async (req, res, next) => {
   try {
     const families = await Family.find({
-      // parents: ObjectId("64a3eaaa0019ae244d8599d8"),
+      parents: ObjectId("64a3eaaa0019ae244d8599d8"),
     })
       .populate("children")
       .populate("parents");
