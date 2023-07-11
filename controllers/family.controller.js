@@ -41,6 +41,17 @@ module.exports.detail = async (req, res, next) => {
   }
 };
 
+module.exports.children = async (req, res, next) => {
+  const { familyId } = req.params;
+  try {
+    const children = await Child.find({ family: familyId });
+    console.log("AQUI", children);
+    return res.status(200).json(children);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.addChild = async (req, res, next) => {
   const { familyId } = req.params;
   const { name, birthdate, healthcard } = req.body;
