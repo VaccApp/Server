@@ -6,11 +6,10 @@ const Child = require("../models/Child.model");
 module.exports.list = async (req, res, next) => {
   try {
     const families = await Family.find({
-      parents: ObjectId("64a3eaaa0019ae244d8599d8"),
+      parents: req.payload._id,
     })
       .populate("children")
       .populate("parents");
-    console.log("USER", families);
     return res.status(200).json(families);
   } catch (error) {
     next(error);

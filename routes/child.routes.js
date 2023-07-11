@@ -9,7 +9,7 @@ const REALAPI_URL = "http://localhost:4001/api";
 
 router.get("/", isAuthenticated, (req, res, next) => {
   Child.find()
-    .then((child) => res.json(child))
+    .then((child) => res.status(200).json(child))
     .catch((err) => res.json(err));
 });
 
