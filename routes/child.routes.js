@@ -55,6 +55,7 @@ router.get("/:childId/sync", async (req, res, next) => {
 router.get("/:id", (req, res, next) => {
   const { id } = req.params;
   Child.findById(id)
+    .populate("vaccines")
     .then((child) => res.status(200).json(child))
     .catch((err) => res.json(err));
 });
