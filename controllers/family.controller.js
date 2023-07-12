@@ -31,13 +31,13 @@ module.exports.create = async (req, res, next) => {
 module.exports.detail = async (req, res, next) => {
   const { familyId } = req.params;
   try {
-    const family = await Family.findById(familyId)
+    const oneFamily = await Family.findById(familyId)
       .populate("children")
       .populate("parents");
-    console.log("family", family);
-    return res.status(200).json(family);
+    console.log("family", familyId);
+    return res.status(200).json(oneFamily);
   } catch (error) {
-    next(error);
+    console.log(error.response.data);
   }
 };
 
