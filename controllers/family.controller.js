@@ -1,6 +1,7 @@
 const Family = require("../models/Family.model");
 const User = require("../models/User.model");
 const nodemailer = require("nodemailer");
+const mongoose = require("mongoose");
 const Child = require("../models/Child.model");
 
 module.exports.list = async (req, res, next) => {
@@ -30,6 +31,8 @@ module.exports.create = async (req, res, next) => {
 
 module.exports.detail = async (req, res, next) => {
   const { familyId } = req.params;
+  // const { objectId } = new mongoose.Types.ObjectId(req.params.id);
+
   try {
     const oneFamily = await Family.findById(familyId)
       .populate("children")
@@ -37,7 +40,7 @@ module.exports.detail = async (req, res, next) => {
     console.log("family", familyId);
     return res.status(200).json(oneFamily);
   } catch (error) {
-    console.log(error.response.data);
+    console.log(error);
   }
 };
 
