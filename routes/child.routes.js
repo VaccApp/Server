@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+const express = require("express");
 const router = require("express").Router();
 const Child = require("../models/Child.model");
 const Vaccine = require("../models/Vaccine.model");
@@ -9,7 +11,7 @@ const REALAPI_URL = "http://localhost:4001/api";
 
 router.get("/", isAuthenticated, (req, res, next) => {
   Child.find()
-    .then((child) => res.json(child))
+    .then((child) => res.status(200).json(child))
     .catch((err) => res.json(err));
 });
 
@@ -52,10 +54,9 @@ router.get("/:childId/sync", async (req, res, next) => {
     });
 });
 
-router.get("/:id", (req, res, next) => {
-  const { id } = req.params;
-  Child.findById(id)
-    .populate("vaccines")
+router.get("/:childId", (req, res, next) => {
+  const { childId } = req.params;
+  Child.findById(childId)
     .then((child) => res.status(200).json(child))
     .catch((err) => res.json(err));
 });

@@ -18,6 +18,10 @@ router.post("/:familyId", familyController.addChild);
 
 router.put("/:familyId", familyController.edit);
 
+router.get("/:familyId/children", familyController.children);
+
+// router.get("/:familyId/children/:childId", familyController.childrendetail);
+
 router.post("/:familyId/invite", familyController.invite);
 
 router.delete("/:familyId", familyController.delete);
