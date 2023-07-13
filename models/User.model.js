@@ -26,6 +26,11 @@ const userSchema = new Schema(
       required: [true, "El DNI es requerido."],
     },
     family: [{ type: Schema.Types.ObjectId, ref: "Family" }],
+    profilePic: {
+      type: String,
+      default:
+        "https://cdn-icons-png.flaticon.com/512/5348/5348883.png",
+    },
   },
   {
     timestamps: true,
