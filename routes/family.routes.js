@@ -20,6 +20,8 @@ router.put("/:familyId", familyController.edit);
 
 router.get("/:familyId/children", familyController.children);
 
+router.get("/:familyId/vaccines", familyController.vaccines);
+
 // router.get("/:familyId/children/:childId", familyController.childrendetail);
 
 router.post("/:familyId/invite", familyController.invite);

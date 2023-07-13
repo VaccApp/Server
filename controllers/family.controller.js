@@ -3,6 +3,7 @@ const User = require("../models/User.model");
 const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
 const Child = require("../models/Child.model");
+const Vaccine = require("../models/Vaccine.model");
 
 module.exports.list = async (req, res, next) => {
   try {
@@ -50,6 +51,17 @@ module.exports.children = async (req, res, next) => {
     const children = await Child.find({ family: familyId });
     console.log("AQUI", children);
     return res.status(200).json(children);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.vaccines = async (req, res, next) => {
+  const { familyId } = req.params;
+  try {
+    const vaccines = await Vaccine.find({ family: familyId });
+    console.log("ALLI", vaccines);
+    return res.status(200).json(vaccines);
   } catch (error) {
     next(error);
   }
