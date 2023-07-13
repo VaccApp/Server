@@ -25,6 +25,9 @@ const vaccineSchema = new Schema(
       enum: ["PENDIENTE", "PROGRAMADA", "PUESTA"],
       default: "PENDIENTE",
     },
+    vaccinationDate: {
+      type: Date,
+    },
     vaccinationAge: {
       type: Number,
     },

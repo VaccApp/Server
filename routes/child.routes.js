@@ -54,9 +54,62 @@ router.get("/:childId/sync", async (req, res, next) => {
     });
 });
 
+router.get("/:childId/new", async (req, res, next) => {
+  const { childId } = req.params;
+
+  const child = await Child.findById(childId);
+
+  // const healthcard = child.healthcard;
+  // const queryParams = {
+  //   name: child.name,
+  //   healthcard: child.healthcard,
+  // };
+
+  axios
+    .get(
+      `${REALAPI_URL}/vaccines`
+      // {
+      // params: queryParams,
+      // }
+    )
+    .then(async ({ data }) => {
+      console.log(data);
+      const allVaccinesFromApi = await data.map((e) => ({
+        name: e.vaccineName,
+        vaccinationAge: e.vaccinationAge,
+      }));
+      const allNewVaccines = await Vaccine.create(allVaccinesFromApi);
+      console.log(allNewVaccines);
+      const vaccIds = await allNewVaccines.map((v) => v._id);
+      const updatedChild = await Child.findByIdAndUpdate(
+        childId,
+        {
+          $push: { vaccines: vaccIds },
+        },
+        { new: true }
+      );
+
+      res.status(200).json(updatedChild);
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
+});
+
 router.get("/:childId", (req, res, next) => {
   const { childId } = req.params;
   Child.findById(childId)
+    .populate("family")
+    .populate({
+      path: "family",
+      populate: { path: "children" },
+    })
+    .populate({
+      path: "family",
+      populate: { path: "parents" },
+    })
+    .populate("vaccines")
     .then((child) => res.status(200).json(child))
     .catch((err) => res.json(err));
 });
@@ -66,6 +119,7 @@ router.get("/:childId/calendar", (req, res, next) => {
   axios
     .get(`${REALAPI_URL}/vaccines`)
     .then((response) => {
+      console.log(response).data;
       const vaccines = response.data;
       const vaccinationAge = vaccines.map((vaccine) => vaccine.vaccinationAge);
       const vaccineName = vaccines.map((vaccine) => vaccine.vaccineName);
