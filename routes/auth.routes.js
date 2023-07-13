@@ -219,14 +219,14 @@ router.post("/login", (req, res, next) => {
   const { email, password } = req.body;
 
   if (email === "" || password === "") {
-    res.status(400).json({ message: "Provide email and password." });
+    res.status(400).json({ message: "Introduzca su email y contraseña" });
     return;
   }
 
   User.findOne({ email })
     .then((foundUser) => {
       if (!foundUser) {
-        res.status(401).json({ message: "User not found." });
+        res.status(401).json({ message: "El usuario no existe" });
         return;
       }
 
@@ -244,7 +244,7 @@ router.post("/login", (req, res, next) => {
 
         res.status(200).json({ authToken: authToken });
       } else {
-        res.status(401).json({ message: "Unable to authenticate the user" });
+        res.status(401).json({ message: "Usuario o contraseña incorrectos" });
       }
     })
     .catch((err) => next(err));
@@ -262,6 +262,29 @@ router.get("/:userId", (req, res, next) => {
   User.findById(userId)
     .populate("family")
     .then((user) => res.status(200).json(user))
+    .catch((err) => res.json(err));
+});
+
+router.put("/:userId", (req, res, next) => {
+  const { userId } = req.params;
+  const { name, surname, profilePic } = req.body;
+
+  User.findByIdAndUpdate(userId, { name, surname, profilePic }, { new: true })
+    .then((updatedUser) => res.status(200).json(updatedUser))
+    .catch((err) => res.json(err));
+});
+
+router.delete("/:userId", (req, res, next) => {
+  const { userId } = req.params;
+
+  User.findByIdAndDelete(userId)
+    .then(() => res.status(200).json({ message: "User deleted" }))
+    .then(() => {
+      return Family.updateMany(
+        { parents: userId },
+        { $pull: { parents: userId } }
+      );
+    })
     .catch((err) => res.json(err));
 });
 
