@@ -4,21 +4,27 @@ const vaccineSchema = new Schema(
   {
     name: {
       type: String,
+      default: "Nombre",
     },
     dose: {
       type: Number,
+      default: 3,
     },
     disease: {
       type: String,
+      default: "Enfermedad",
     },
     creator: {
       type: String,
+      default: "Fabricante",
     },
     expires: {
       type: Date,
+      default: "2024-07-14T17:28:04",
     },
     batch: {
       type: String,
+      default: "1r0n71r0n",
     },
     status: {
       type: String,
@@ -27,9 +33,11 @@ const vaccineSchema = new Schema(
     },
     vaccinationDate: {
       type: Date,
+      default: "2024-07-14T17:28:04",
     },
     vaccinationAge: {
       type: Number,
+      default: 99,
     },
   },
   {

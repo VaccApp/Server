@@ -67,6 +67,22 @@ module.exports.vaccines = async (req, res, next) => {
   }
 };
 
+module.exports.appointments = async (req, res, next) => {
+  const { familyId } = req.params;
+  try {
+    const family = await Family.findById(familyId)
+      .populate("children")
+      .populate({
+        path: "children",
+        populate: "vaccines",
+      });
+    console.log("appointments", family);
+    return res.status(200).json(family);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.addChild = async (req, res, next) => {
   const { familyId } = req.params;
   const { name, birthdate, healthcard } = req.body;

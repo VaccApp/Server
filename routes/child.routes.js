@@ -6,6 +6,7 @@ const Vaccine = require("../models/Vaccine.model");
 const Family = require("../models/Family.model");
 const axios = require("axios");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
+const { restart } = require("nodemon");
 
 const REALAPI_URL = "http://localhost:4001/api";
 
@@ -36,8 +37,9 @@ router.get("/:childId/sync", async (req, res, next) => {
         vaccinationAge: e.vaccinationAge,
       }));
       const newVaccines = await Vaccine.create(vaccinesFromApi);
-      console.log(newVaccines);
+      console.log(newVaccines[0]);
       const vaccIds = newVaccines.map((v) => v._id);
+      console.log("vaccIds", vaccIds);
       const updatedChild = await Child.findByIdAndUpdate(
         childId,
         {
@@ -59,19 +61,8 @@ router.get("/:childId/new", async (req, res, next) => {
 
   const child = await Child.findById(childId);
 
-  // const healthcard = child.healthcard;
-  // const queryParams = {
-  //   name: child.name,
-  //   healthcard: child.healthcard,
-  // };
-
   axios
-    .get(
-      `${REALAPI_URL}/vaccines`
-      // {
-      // params: queryParams,
-      // }
-    )
+    .get(`${REALAPI_URL}/vaccines`)
     .then(async ({ data }) => {
       console.log(data);
       const allVaccinesFromApi = await data.map((e) => ({
@@ -153,6 +144,16 @@ router.get("/:childId/calendar", (req, res, next) => {
         .catch((err) => res.json(err));
     })
     .catch((err) => res.json(err));
+});
+
+router.get("/vaccine/:vaccineId", async (req, res, next) => {
+  const { vaccineId } = req.params;
+  const vaccine = await Vaccine.findById(vaccineId);
+  const child = await Child.find({ vaccines: vaccineId });
+  let resp = [];
+  resp.push(child, vaccine);
+  console.log(resp);
+  return res.status(200).json(resp);
 });
 
 router.put("/:id", (req, res, next) => {

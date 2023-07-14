@@ -20,7 +20,17 @@ router.get("/calendar", (req, res, next) => {
 });
 
 router.post("/:receiverId", (req, res, next) => {
-  const { name, dose, disease, creator, expires, batch, status } = req.body;
+  const {
+    name,
+    dose,
+    disease,
+    creator,
+    expires,
+    batch,
+    status,
+    vaccinationAge,
+    vaccinationDate,
+  } = req.body;
 
   const { receiverId } = req.params;
 
@@ -32,6 +42,8 @@ router.post("/:receiverId", (req, res, next) => {
     expires,
     batch,
     status,
+    vaccinationAge,
+    vaccinationDate,
   })
     .then((newVaccine) => {
       return Child.findByIdAndUpdate(
@@ -50,17 +62,37 @@ router.get("/:vaccineId", (req, res, next) => {
   const { vaccineId } = req.params;
 
   Vaccine.findById(vaccineId)
-    .then((vaccine) => res.status(200).json(vaccine))
+    .then((vaccine) => console.log(vaccine))
     .catch((err) => res.json(err));
 });
 
 router.put("/:vaccineId", (req, res, next) => {
   const { vaccineId } = req.params;
-  const { name, dose, disease, creator, expires, batch, status } = req.body;
+  const {
+    name,
+    dose,
+    disease,
+    creator,
+    expires,
+    batch,
+    status,
+    vaccinationAge,
+    vaccinationDate,
+  } = req.body;
 
   Vaccine.findByIdAndUpdate(
     vaccineId,
-    { name, dose, disease, creator, expires, batch, status },
+    {
+      name,
+      dose,
+      disease,
+      creator,
+      expires,
+      batch,
+      status,
+      vaccinationAge,
+      vaccinationDate,
+    },
     { new: true }
   )
     .then((updatedVaccine) => res.status(200).json(updatedVaccine))
