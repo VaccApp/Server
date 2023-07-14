@@ -16,6 +16,10 @@ const childSchema = new Schema(
     },
     family: { type: Schema.Types.ObjectId, ref: "Family" },
     vaccines: [{ type: Schema.Types.ObjectId, ref: "Vaccine" }],
+    childPic: {
+      type: String,
+      default: "https://cdn3.iconfinder.com/data/icons/materia-human/24/013_042_newborn_infant_child_baby-512.png",
+    },
   },
   {
     timestamps: true,

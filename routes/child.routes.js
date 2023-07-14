@@ -52,9 +52,9 @@ router.get("/:childId/sync", async (req, res, next) => {
     });
 });
 
-router.get("/:id", (req, res, next) => {
-  const { id } = req.params;
-  Child.findById(id)
+router.get("/:childId", (req, res, next) => {
+  const { childId } = req.params;
+  Child.findById(childId)
     .populate("vaccines")
     .then((child) => res.status(200).json(child))
     .catch((err) => res.json(err));
@@ -100,19 +100,19 @@ router.get("/:childId/calendar", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.put("/:id", (req, res, next) => {
-  const { id } = req.params;
-  const { name, birthdate } = req.body;
+router.put("/:childId", (req, res, next) => {
+  const { childId } = req.params;
+  const { name, birthdate, childPic } = req.body;
 
-  Child.findByIdAndUpdate(id, { name, birthdate }, { new: true })
+  Child.findByIdAndUpdate(childId, { name, birthdate, childPic }, { new: true })
     .then((updatedChild) => res.json(updatedChild))
     .catch((err) => res.json(err));
 });
 
-router.delete("/:id", (req, res, next) => {
-  const { id } = req.params;
+router.delete("/:childId", (req, res, next) => {
+  const { childId } = req.params;
 
-  Child.findByIdAndDelete(id)
+  Child.findByIdAndDelete(childId)
     .then(() => res.json({ message: "Hijo eliminado correctamente" }))
     .catch((err) => res.json(err));
 });

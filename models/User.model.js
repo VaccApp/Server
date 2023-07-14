@@ -28,8 +28,7 @@ const userSchema = new Schema(
     family: [{ type: Schema.Types.ObjectId, ref: "Family" }],
     profilePic: {
       type: String,
-      default:
-        "https://cdn-icons-png.flaticon.com/512/5348/5348883.png",
+      default: "https://cdn-icons-png.flaticon.com/512/5348/5348883.png",
     },
   },
   {
