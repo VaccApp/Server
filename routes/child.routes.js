@@ -119,7 +119,7 @@ router.get("/:childId/calendar", (req, res, next) => {
   axios
     .get(`${REALAPI_URL}/vaccines`)
     .then((response) => {
-      console.log(response).data;
+      console.log(response.data);
       const vaccines = response.data;
       const vaccinationAge = vaccines.map((vaccine) => vaccine.vaccinationAge);
       const vaccineName = vaccines.map((vaccine) => vaccine.vaccineName);
