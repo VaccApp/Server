@@ -1,14 +1,17 @@
 const Family = require("../models/Family.model");
 const User = require("../models/User.model");
 const nodemailer = require("nodemailer");
+const mongoose = require("mongoose");
 const Child = require("../models/Child.model");
+const Vaccine = require("../models/Vaccine.model");
 
 module.exports.list = async (req, res, next) => {
   try {
-    const families = await Family.find()
+    const families = await Family.find({
+      parents: req.payload._id,
+    })
       .populate("children")
       .populate("parents");
-    console.log(User);
     return res.status(200).json(families);
   } catch (error) {
     next(error);
@@ -29,11 +32,51 @@ module.exports.create = async (req, res, next) => {
 
 module.exports.detail = async (req, res, next) => {
   const { familyId } = req.params;
+  // const { objectId } = new mongoose.Types.ObjectId(req.params.id);
+
+  try {
+    const oneFamily = await Family.findById(familyId)
+      .populate("children")
+      .populate("parents");
+    console.log("family", familyId);
+    return res.status(200).json(oneFamily);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports.children = async (req, res, next) => {
+  const { familyId } = req.params;
+  try {
+    const children = await Child.find({ family: familyId });
+    console.log("AQUI", children);
+    return res.status(200).json(children);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.vaccines = async (req, res, next) => {
+  const { familyId } = req.params;
+  try {
+    const vaccines = await Vaccine.find({ family: familyId });
+    console.log("ALLI", vaccines);
+    return res.status(200).json(vaccines);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.appointments = async (req, res, next) => {
+  const { familyId } = req.params;
   try {
     const family = await Family.findById(familyId)
       .populate("children")
-      .populate("parents");
-    console.log("family", family);
+      .populate({
+        path: "children",
+        populate: "vaccines",
+      });
+    console.log("appointments", family);
     return res.status(200).json(family);
   } catch (error) {
     next(error);
