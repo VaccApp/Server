@@ -36,6 +36,7 @@ router.get("/:childId/sync", async (req, res, next) => {
         name: e.vaccineName,
         vaccinationAge: e.vaccinationAge,
       }));
+      console.log("VACCINES FROM API", vaccinesFromApi);
       const newVaccines = await Vaccine.create(vaccinesFromApi);
       console.log(newVaccines[0]);
       const vaccIds = newVaccines.map((v) => v._id);
