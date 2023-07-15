@@ -32,8 +32,9 @@ router.get("/:childId/sync", async (req, res, next) => {
       params: queryParams,
     })
     .then(async ({ data }) => {
+      console.log(data);
       const vaccinesFromApi = data.vaccines.map((e) => ({
-        name: e.vaccineName,
+        name: e.vaccinename,
         vaccinationAge: e.vaccinationAge,
       }));
       console.log("VACCINES FROM API", vaccinesFromApi);
@@ -158,7 +159,7 @@ router.get("/:childId/calendar", (req, res, next) => {
 router.get("/vaccine/:vaccineId", async (req, res, next) => {
   const { vaccineId } = req.params;
   const vaccine = await Vaccine.findById(vaccineId);
-  const child = await Child.find({ vaccines: vaccineId });
+  const child = await Child.findOne({ vaccines: vaccineId });
   let resp = [];
   resp.push(child, vaccine);
   console.log(resp);
