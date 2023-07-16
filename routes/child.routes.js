@@ -120,7 +120,7 @@ router.get("/:childId/calendar", (req, res, next) => {
   axios
     .get(`${REALAPI_URL}/vaccines`)
     .then((response) => {
-      console.log(response).data;
+      console.log(response.data);
       const vaccines = response.data;
       const vaccinationAge = vaccines.map((vaccine) => vaccine.vaccinationAge);
       const vaccineName = vaccines.map((vaccine) => vaccine.vaccineName);
@@ -163,6 +163,20 @@ router.get("/vaccine/:vaccineId", async (req, res, next) => {
   let resp = [];
   resp.push(child, vaccine);
   console.log(resp);
+  return res.status(200).json(resp);
+});
+
+router.post("/vaccine/:vaccineId", async (req, res, next) => {
+  const { vaccineId } = req.params;
+  const { selectedDate } = req.body;
+  const vaccine = await Vaccine.findByIdAndUpdate(vaccineId, {
+    vaccinationDate: selectedDate,
+  });
+  console.log(selectedDate, "vaccine", vaccine);
+  const child = await Child.findOne({ vaccines: vaccineId });
+  let resp = [];
+  resp.push(child, vaccine);
+  console.log(resp, "WEE", selectedDate);
   return res.status(200).json(resp);
 });
 
