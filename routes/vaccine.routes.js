@@ -62,7 +62,7 @@ router.get("/:vaccineId", (req, res, next) => {
   const { vaccineId } = req.params;
 
   Vaccine.findById(vaccineId)
-    .then((vaccine) => console.log(vaccine))
+    .then((vaccine) => res.status(200).json(vaccine))
     .catch((err) => res.json(err));
 });
 
