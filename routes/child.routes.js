@@ -180,6 +180,26 @@ router.post("/vaccine/:vaccineId", async (req, res, next) => {
   return res.status(200).json(resp);
 });
 
+router.put("/vaccine/:vaccineId", async (req, res, next) => {
+  const { vaccineId } = req.params;
+
+  const { selectedDate } = req.body;
+  console.log("REQBODY", selectedDate);
+  const vaccine = await Vaccine.findByIdAndUpdate(
+    vaccineId,
+    {
+      vaccinationDate: selectedDate,
+    },
+    { new: true }
+  );
+
+  console.log("vaccine", vaccine);
+  const child = await Child.findOne({ vaccines: vaccineId });
+  let resp = [];
+  resp.push(child, vaccine);
+  return res.status(200).json(resp);
+});
+
 router.put("/:childId", (req, res, next) => {
   const { childId } = req.params;
   const { name, birthdate, childPic } = req.body;
