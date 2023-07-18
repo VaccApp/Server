@@ -85,12 +85,13 @@ module.exports.appointments = async (req, res, next) => {
 
 module.exports.addChild = async (req, res, next) => {
   const { familyId } = req.params;
-  const { name, birthdate, healthcard } = req.body;
+  const { name, birthdate, healthcard, childPic } = req.body;
 
   Child.create({
     name,
     birthdate,
     healthcard,
+    childPic,
     family: familyId,
   })
     .then((newChild) => {
