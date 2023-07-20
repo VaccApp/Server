@@ -118,7 +118,7 @@ router.get("/:childId", (req, res, next) => {
 router.get("/:childId/calendar", (req, res, next) => {
   const { childId } = req.params;
   axios
-    .get(`${REALAPI_URL}/vaccines`)
+    .get(`${API_URL}/vaccines`)
     .then((response) => {
       console.log(response.data);
       const vaccines = response.data;
