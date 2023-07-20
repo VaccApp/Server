@@ -22,15 +22,13 @@ router.get("/:childId/sync", async (req, res, next) => {
   const child = await Child.findById(childId);
 
   const healthcard = child.healthcard;
-  const queryParams = {
-    name: child.name,
-    healthcard: child.healthcard,
-  };
+  // const queryParams = {
+  //   name: child.name,
+  //   healthcard: child.healthcard,
+  // };
 
   axios
-    .get(`${REALAPI_URL}/${healthcard}`, {
-      params: queryParams,
-    })
+    .get(`${REALAPI_URL}/${healthcard}`)
     .then(async ({ data }) => {
       console.log(data);
       const vaccinesFromApi = data.vaccines.map((e) => ({

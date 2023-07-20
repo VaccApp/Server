@@ -4,6 +4,7 @@ const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
 const Child = require("../models/Child.model");
 const Vaccine = require("../models/Vaccine.model");
+const FamilyModel = require("../models/Family.model");
 
 module.exports.list = async (req, res, next) => {
   try {
@@ -16,6 +17,14 @@ module.exports.list = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+module.exports.getFamily = async (req, res, next) => {
+  try {
+    const parentId = req.payload._id;
+    const family = await Family.find({ parents: parentId });
+    console.log("family", family, "parentId", parentId);
+  } catch {}
 };
 
 module.exports.create = async (req, res, next) => {
@@ -49,7 +58,7 @@ module.exports.children = async (req, res, next) => {
   const { familyId } = req.params;
   try {
     const children = await Child.find({ family: familyId });
-    // console.log("AQUI", children);
+    console.log("AQUI", children);
     return res.status(200).json(children);
   } catch (error) {
     next(error);
@@ -60,7 +69,7 @@ module.exports.vaccines = async (req, res, next) => {
   const { familyId } = req.params;
   try {
     const vaccines = await Vaccine.find({ family: familyId });
-    // console.log("ALLI", vaccines);
+    console.log("ALLI", vaccines);
     return res.status(200).json(vaccines);
   } catch (error) {
     next(error);
@@ -68,30 +77,38 @@ module.exports.vaccines = async (req, res, next) => {
 };
 
 module.exports.appointments = async (req, res, next) => {
-  const { familyId } = req.params;
   try {
+    const { familyId } = req.params;
     const family = await Family.findById(familyId)
       .populate("children")
       .populate({
         path: "children",
         populate: "vaccines",
       });
-    console.log("appointments", family);
     return res.status(200).json(family);
   } catch (error) {
     next(error);
   }
 };
 
+module.exports.getFamilyByParent = async (req, res, next) => {
+  try {
+    const userId = req.params;
+    const family = await Family.find({ parents: userId });
+    return res.status(200).json(family);
+  } catch {
+    next(error);
+  }
+};
+
 module.exports.addChild = async (req, res, next) => {
   const { familyId } = req.params;
-  const { name, birthdate, healthcard, childPic } = req.body;
+  const { name, birthdate, healthcard } = req.body;
 
   Child.create({
     name,
     birthdate,
     healthcard,
-    childPic,
     family: familyId,
   })
     .then((newChild) => {
