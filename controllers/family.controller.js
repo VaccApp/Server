@@ -144,7 +144,7 @@ module.exports.invite = async (req, res, next) => {
       to: email,
       subject: `Invitación a unirse a la familia ${family.surname}`,
       html: `<h1>¡Hola!</h1>
-      <p>Has sido invitado a unirte a la familia ${family.surname} en VaccApp. Haz click <a href="http://localhost:3000/join-family/${familyId}">aquí</a> para aceptar la invitación.</p>`,
+      <p>Has sido invitado a unirte a la familia ${family.surname} en VaccApp. Haz click <a href="https://vaccapp.netlify.app//join-family/${familyId}">aquí</a> para aceptar la invitación.</p>`,
     });
     console.log("Message sent: %s", info.messageId);
     return res.status(200).json("Email enviado correctamente");
