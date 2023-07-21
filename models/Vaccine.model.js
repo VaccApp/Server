@@ -39,6 +39,10 @@ const vaccineSchema = new Schema(
       type: Number,
       default: 99,
     },
+    center: {
+      type: String,
+      default: "Centro de vacunación",
+    },
   },
   {
     timestamps: true,

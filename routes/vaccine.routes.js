@@ -30,6 +30,7 @@ router.post("/:receiverId", (req, res, next) => {
     status,
     vaccinationAge,
     vaccinationDate,
+    center
   } = req.body;
 
   const { receiverId } = req.params;
@@ -44,6 +45,7 @@ router.post("/:receiverId", (req, res, next) => {
     status,
     vaccinationAge,
     vaccinationDate,
+    center
   })
     .then((newVaccine) => {
       return Child.findByIdAndUpdate(
@@ -78,6 +80,7 @@ router.put("/:vaccineId", (req, res, next) => {
     status,
     vaccinationAge,
     vaccinationDate,
+    center
   } = req.body;
 
   Vaccine.findByIdAndUpdate(
@@ -92,6 +95,7 @@ router.put("/:vaccineId", (req, res, next) => {
       status,
       vaccinationAge,
       vaccinationDate,
+      center
     },
     { new: true }
   )
