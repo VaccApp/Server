@@ -18,7 +18,7 @@ router.get("/", isAuthenticated, (req, res, next) => {
 
 router.get("/:childId/sync", async (req, res, next) => {
   const { childId } = req.params;
-
+  console.log(childId);
   const child = await Child.findById(childId);
 
   const healthcard = child.healthcard;
@@ -26,15 +26,13 @@ router.get("/:childId/sync", async (req, res, next) => {
     name: child.name,
     healthcard: child.healthcard,
   };
-
+  console.log("3333", healthcard);
   axios
-    .get(`${REALAPI_URL}/${healthcard}`, {
-      params: queryParams,
-    })
+    .get(`${REALAPI_URL}/${healthcard}`)
     .then(async ({ data }) => {
-      console.log(data);
-      const vaccinesFromApi = data.vaccines.map((e) => ({
-        name: e.vaccinename,
+      console.log("DATA", data);
+      const vaccinesFromApi = await data[0].vaccines.map((e) => ({
+        name: e.vaccineName,
         vaccinationAge: e.vaccinationAge,
       }));
       console.log("VACCINES FROM API", vaccinesFromApi);
