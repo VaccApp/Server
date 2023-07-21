@@ -20,17 +20,20 @@ router.get("/:childId/sync", async (req, res, next) => {
   const { childId } = req.params;
 
   const child = await Child.findById(childId);
+  // console.log("11", child);
 
   const healthcard = child.healthcard;
-  // const queryParams = {
-  //   name: child.name,
-  //   healthcard: child.healthcard,
-  // };
+  // console.log("12", healthcard);
+
+  const queryParams = {
+    name: child.name,
+    healthcard: child.healthcard,
+  };
 
   axios
     .get(`${REALAPI_URL}/${healthcard}`)
     .then(async ({ data }) => {
-      console.log(data);
+      console.log("EEWWEE", data);
       const vaccinesFromApi = data.vaccines.map((e) => ({
         name: e.vaccinename,
         vaccinationAge: e.vaccinationAge,
