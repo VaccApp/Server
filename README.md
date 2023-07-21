@@ -8,9 +8,9 @@
 
 ## Description
 
-VaccApp es una herramienta online que permite sustituir la clásica cartilla de vacunación por una moderna app que permite llevar un registro de las vacunas que se han aplicado a cada persona, además de poder consultar información sobre las vacunas y sus enfermedades asociadas. Está principalmente enfocada para que los padres de los niños puedan llevar un control de las vacunas que se les han aplicado a sus hijos, así como de las citas de vacunación, pero también puede ser utilizado por cualquier persona que quiera llevar un registro de sus vacunas.
+VaccApp es una herramienta online que permite sustituir la clásica cartilla de vacunación por una moderna app que permite llevar un registro de las vacunas que se han aplicado a cada persona y las citas de vacunación, además de poder consultar información sobre las vacunas y sus enfermedades asociadas. Está principalmente enfocada para que los padres puedan llevar un control de las vacunas que se les han aplicado a sus hijos, así como de las citas de vacunación, pero también puede ser utilizado por cualquier persona que quiera llevar un registro de sus vacunas.
 
-VaccApp is an online tool that allows to replace the classic vaccination card with a modern app that allows to keep a record of the vaccines that have been applied to each person, in addition to being able to consult information about the vaccines and their associated diseases. It is mainly focused so that parents of children can keep track of the vaccines that have been applied to their children, as well as vaccination appointments, but it can also be used by anyone who wants to keep a record of their vaccines.
+VaccApp is an online tool that allows to replace the classic vaccination card with a modern app that allows you to keep a record of the vaccines that have been applied to each person and vaccination appointments, as well as being able to consult information about vaccines and their associated diseases. It is mainly designed for parents who want to keep track of the vaccines that have been applied to their children, as well as vaccination appointments, but it can also be used by anyone who wants to keep a record of their vaccines.
 
 ## Built With
 
