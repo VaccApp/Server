@@ -6,9 +6,8 @@ const Vaccine = require("../models/Vaccine.model");
 const Family = require("../models/Family.model");
 const axios = require("axios");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
-const { restart } = require("nodemon");
 
-const REALAPI_URL = "https://api-madrid.fly.dev//api";
+const REALAPI_URL = "https://api-madrid.fly.dev/api";
 
 router.get("/", isAuthenticated, (req, res, next) => {
   Child.find()
