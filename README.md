@@ -110,6 +110,7 @@ VaccApp is an online tool that allows to replace the classic vaccination card wi
   status: {type: String, enum: ['pending', 'applied', 'programmed'], default: 'pending'},
   vaccinationAge: {type: Number, required: true},
   vaccinationDate: {type: Date, required: true},
+  center: {type: String},
 }
 ```
 
