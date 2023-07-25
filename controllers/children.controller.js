@@ -22,7 +22,6 @@ module.exports.detail = async (req, res, enxt) => {
     const child = await Child.findById(childId)
       .populate("family")
       .populate("vaccines");
-    console.log("child from controller", child);
     return res.status(200).json(child);
   } catch (error) {
     next(error);

@@ -4,7 +4,7 @@ const Child = require("../models/Child.model");
 const axios = require("axios");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
-const REALAPI_URL = "https://api-madrid.fly.dev/api";
+const REALAPI_URL = "https://api-madrid.fly.dev";
 
 router.get("/", (req, res, next) => {
   Vaccine.find()
@@ -30,7 +30,7 @@ router.post("/:receiverId", (req, res, next) => {
     status,
     vaccinationAge,
     vaccinationDate,
-    center
+    center,
   } = req.body;
 
   const { receiverId } = req.params;
@@ -45,7 +45,7 @@ router.post("/:receiverId", (req, res, next) => {
     status,
     vaccinationAge,
     vaccinationDate,
-    center
+    center,
   })
     .then((newVaccine) => {
       return Child.findByIdAndUpdate(
@@ -80,7 +80,7 @@ router.put("/:vaccineId", (req, res, next) => {
     status,
     vaccinationAge,
     vaccinationDate,
-    center
+    center,
   } = req.body;
 
   Vaccine.findByIdAndUpdate(
@@ -95,7 +95,7 @@ router.put("/:vaccineId", (req, res, next) => {
       status,
       vaccinationAge,
       vaccinationDate,
-      center
+      center,
     },
     { new: true }
   )

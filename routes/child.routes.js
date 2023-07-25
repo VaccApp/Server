@@ -6,8 +6,9 @@ const Vaccine = require("../models/Vaccine.model");
 const Family = require("../models/Family.model");
 const axios = require("axios");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
+const { restart } = require("nodemon");
 
-const REALAPI_URL = "https://api-madrid.fly.dev/api";
+const REALAPI_URL = "https://api-madrid.fly.dev";
 
 router.get("/", isAuthenticated, (req, res, next) => {
   Child.find()
@@ -17,7 +18,6 @@ router.get("/", isAuthenticated, (req, res, next) => {
 
 router.get("/:childId/sync", async (req, res, next) => {
   const { childId } = req.params;
-  console.log(childId);
   const child = await Child.findById(childId);
 
   const healthcard = child.healthcard;
@@ -25,7 +25,6 @@ router.get("/:childId/sync", async (req, res, next) => {
     name: child.name,
     healthcard: child.healthcard,
   };
-  console.log("3333", healthcard);
   axios
     .get(`${REALAPI_URL}/${healthcard}`)
     .then(async ({ data }) => {
@@ -34,11 +33,8 @@ router.get("/:childId/sync", async (req, res, next) => {
         name: e.vaccineName,
         vaccinationAge: e.vaccinationAge,
       }));
-      console.log("VACCINES FROM API", vaccinesFromApi);
       const newVaccines = await Vaccine.create(vaccinesFromApi);
-      console.log(newVaccines[0]);
       const vaccIds = newVaccines.map((v) => v._id);
-      console.log("vaccIds", vaccIds);
       const updatedChild = await Child.findByIdAndUpdate(
         childId,
         {
@@ -63,13 +59,11 @@ router.get("/:childId/new", async (req, res, next) => {
   axios
     .get(`${REALAPI_URL}/vaccines`)
     .then(async ({ data }) => {
-      console.log(data);
       const allVaccinesFromApi = await data.map((e) => ({
         name: e.vaccineName,
         vaccinationAge: e.vaccinationAge,
       }));
       const allNewVaccines = await Vaccine.create(allVaccinesFromApi);
-      console.log(allNewVaccines);
       const vaccIds = await allNewVaccines.map((v) => v._id);
       const updatedChild = await Child.findByIdAndUpdate(
         childId,
@@ -115,9 +109,8 @@ router.get("/:childId", (req, res, next) => {
 router.get("/:childId/calendar", (req, res, next) => {
   const { childId } = req.params;
   axios
-    .get(`${REALAPI_URL}/vaccines`)
+    .get(`${API_URL}/vaccines`)
     .then((response) => {
-      console.log(response.data);
       const vaccines = response.data;
       const vaccinationAge = vaccines.map((vaccine) => vaccine.vaccinationAge);
       const vaccineName = vaccines.map((vaccine) => vaccine.vaccineName);
@@ -128,7 +121,6 @@ router.get("/:childId/calendar", (req, res, next) => {
           const childAgeInMonths = Math.floor(
             (new Date() - child.birthdate) / 1000 / 60 / 60 / 24 / 30
           );
-          console.log("Child age in months", childAgeInMonths);
           const vaccinesToBeTaken = vaccinationAge.map((age, index) => {
             if (age - childAgeInMonths === 1) {
               return {
@@ -159,7 +151,6 @@ router.get("/vaccine/:vaccineId", async (req, res, next) => {
   const child = await Child.findOne({ vaccines: vaccineId });
   let resp = [];
   resp.push(child, vaccine);
-  console.log(resp);
   return res.status(200).json(resp);
 });
 
@@ -169,11 +160,9 @@ router.post("/vaccine/:vaccineId", async (req, res, next) => {
   const vaccine = await Vaccine.findByIdAndUpdate(vaccineId, {
     vaccinationDate: selectedDate,
   });
-  console.log(selectedDate, "vaccine", vaccine);
   const child = await Child.findOne({ vaccines: vaccineId });
   let resp = [];
   resp.push(child, vaccine);
-  console.log(resp, "WEE", selectedDate);
   return res.status(200).json(resp);
 });
 
@@ -181,7 +170,6 @@ router.put("/vaccine/:vaccineId", async (req, res, next) => {
   const { vaccineId } = req.params;
 
   const { selectedDate } = req.body;
-  console.log("REQBODY", selectedDate);
   const vaccine = await Vaccine.findByIdAndUpdate(
     vaccineId,
     {
@@ -190,7 +178,6 @@ router.put("/vaccine/:vaccineId", async (req, res, next) => {
     { new: true }
   );
 
-  console.log("vaccine", vaccine);
   const child = await Child.findOne({ vaccines: vaccineId });
   let resp = [];
   resp.push(child, vaccine);

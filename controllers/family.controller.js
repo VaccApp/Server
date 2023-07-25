@@ -38,7 +38,6 @@ module.exports.detail = async (req, res, next) => {
     const oneFamily = await Family.findById(familyId)
       .populate("children")
       .populate("parents");
-    console.log("family", familyId);
     return res.status(200).json(oneFamily);
   } catch (error) {
     console.log(error);
@@ -49,7 +48,6 @@ module.exports.children = async (req, res, next) => {
   const { familyId } = req.params;
   try {
     const children = await Child.find({ family: familyId });
-    // console.log("AQUI", children);
     return res.status(200).json(children);
   } catch (error) {
     next(error);
@@ -60,7 +58,6 @@ module.exports.vaccines = async (req, res, next) => {
   const { familyId } = req.params;
   try {
     const vaccines = await Vaccine.find({ family: familyId });
-    // console.log("ALLI", vaccines);
     return res.status(200).json(vaccines);
   } catch (error) {
     next(error);
@@ -76,7 +73,6 @@ module.exports.appointments = async (req, res, next) => {
         path: "children",
         populate: "vaccines",
       });
-    console.log("appointments", family);
     return res.status(200).json(family);
   } catch (error) {
     next(error);
@@ -95,7 +91,6 @@ module.exports.addChild = async (req, res, next) => {
     family: familyId,
   })
     .then((newChild) => {
-      console.log(newChild);
       return Family.findByIdAndUpdate(
         familyId,
         {
