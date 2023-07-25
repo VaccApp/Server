@@ -16,9 +16,9 @@ VaccApp is an online tool that allows to replace the classic vaccination card wi
 
 - Javascript
 
-- npm / MongoDB / Express / Node.js
+- npm / MongoDB / Express / Node.js / Nodemailer
 
-- axios / jsonwebtoken / cors / Nodemailer
+- axios / jsonwebtoken / RegEx / cors
 
 ## Server Routes
 
