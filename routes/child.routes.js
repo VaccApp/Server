@@ -100,7 +100,7 @@ router.get("/:childId", (req, res, next) => {
 router.get("/:childId/calendar", (req, res, next) => {
   const { childId } = req.params;
   axios
-    .get(`${API_URL}/vaccines`)
+    .get(`${REALAPI_URL}/vaccines`)
     .then((response) => {
       const vaccines = response.data;
       const vaccinationAge = vaccines.map((vaccine) => vaccine.vaccinationAge);
