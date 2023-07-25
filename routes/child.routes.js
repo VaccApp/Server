@@ -98,14 +98,6 @@ router.get("/:childId", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-//     router.get("/:childId", (req, res, next) => {
-//       const { childId } = req.params;
-//       Child.findById(childId)
-//     .populate("vaccines")
-//     .then((child) => res.status(200).json(child))
-//     .catch((err) => res.json(err));
-// });
-
 router.get("/:childId/calendar", (req, res, next) => {
   const { childId } = req.params;
   axios
