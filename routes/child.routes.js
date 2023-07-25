@@ -7,7 +7,7 @@ const Family = require("../models/Family.model");
 const axios = require("axios");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 
-const REALAPI_URL = "https://api-madrid.fly.dev";
+const REALAPI_URL = "https://api-madrid.fly.dev/api";
 
 router.get("/", isAuthenticated, (req, res, next) => {
   Child.find()
