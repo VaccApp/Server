@@ -62,6 +62,7 @@ router.post("/:receiverId", (req, res, next) => {
 
 router.get("/:vaccineId", (req, res, next) => {
   const { vaccineId } = req.params;
+  console.log("A VER", vaccineId);
 
   Vaccine.findById(vaccineId)
     .then((vaccine) => {
