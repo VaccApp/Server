@@ -60,14 +60,14 @@ router.post("/:receiverId", (req, res, next) => {
     .catch((err) => res.json(err));
 });
 
-router.get("/:vaccineId", (req, res, next) => {
+router.get("/:vaccineId", async (req, res, next) => {
   const { vaccineId } = req.params;
   console.log("A VER back", vaccineId);
 
-  Vaccine.findById(vaccineId)
+  const oneVaccine = await Vaccine.findById(vaccineId)
     .then((vaccine) => {
       console.log(vaccine);
-      res.status(200).json(vaccine);
+      res.status(200).json(oneVaccine);
     })
     .catch((err) => res.json(err));
 });
