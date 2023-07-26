@@ -62,7 +62,7 @@ router.post("/:receiverId", (req, res, next) => {
 
 router.get("/:vaccineId", async (req, res, next) => {
   const { vaccineId } = req.params;
-  console.log("A VER back", vaccineId);
+  console.log("A VER back", { vaccineId });
 
   const oneVaccine = await Vaccine.findById(vaccineId)
     .then((vaccine) => {
