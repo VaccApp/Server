@@ -136,4 +136,4 @@ VaccApp is an online tool that allows to replace the classic vaccination card wi
 
 ### Slides
 
-[Slides Link](https://docs.google.com)
+[Slides Link](https://slides.com/vaccapp/deck)
